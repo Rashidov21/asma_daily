@@ -30,7 +30,7 @@ Open [http://localhost:3000](http://localhost:3000).
 | Variable | Purpose |
 |----------|---------|
 | `DAILY_ANCHOR_DATE` | Day 1 of the cycle (`YYYY-MM-DD`, default `2025-01-01`) |
-| `NEXT_PUBLIC_SITE_URL` | Public origin for `/setup` copyable API URL |
+| `NEXT_PUBLIC_SITE_URL` | Public origin (`https://asma-daily-wallpaper.netlify.app`) |
 | `NEXT_PUBLIC_SHORTCUT_INSTALL_URL` | iCloud Shortcuts share link for one-tap install |
 
 ## API
@@ -62,11 +62,25 @@ Covers first/second/99th/100th day, leap years, and Tashkent midnight boundaries
 
 ## iPhone Shortcuts
 
-1. Set `NEXT_PUBLIC_SHORTCUT_INSTALL_URL` to your shared Shortcut, **or** follow `/setup`.
-2. Shortcut should `GET` `{SITE}/api/wallpaper` and set / save Lock Screen wallpaper.
-3. Add a Personal Automation (Time of Day) to run daily.
+Source recipe: [`shortcuts/ASMA-Daily.json`](shortcuts/ASMA-Daily.json)
 
-The website cannot change the Lock Screen by itself — Shortcuts must.
+Actions:
+1. **Get Contents of URL** → `GET {SITE}/api/wallpaper`
+2. **Set Wallpaper** → Lock Screen
+3. **Show Notification**
+
+### One-tap «iPhone'ga o'rnatish»
+
+Apple only allows one-tap install via an **iCloud share link** (signed by Shortcuts.app):
+
+1. On iPhone/Mac, create the shortcut (from `/setup` or the JSON recipe).
+2. Share → **Copy iCloud Link**.
+3. Set `NEXT_PUBLIC_SHORTCUT_INSTALL_URL` to that link (Netlify env + `.env.local`).
+4. Redeploy. The gold button then opens Shortcuts → **Add Shortcut** automatically.
+
+Until the env is set, the button copies the API URL and opens the Shortcuts app (`/api/shortcut` → `/setup?install=1`).
+
+Add a Personal Automation (Time of Day) to run daily. The website cannot change the Lock Screen by itself.
 
 ## Netlify deploy
 

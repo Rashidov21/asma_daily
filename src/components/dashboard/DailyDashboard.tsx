@@ -1,16 +1,21 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Download } from "lucide-react";
 import { motion, MotionConfig, type Variants } from "framer-motion";
 import type { DailyPayload } from "@/lib/daily-name";
 import { NAMES } from "@/data/names";
+import { getSkyPeriod, isDaylike, type SkyPeriod } from "@/lib/sky-period";
 import { NamesRing } from "@/components/dashboard/NamesRing";
 import { SegmentedProgress } from "@/components/dashboard/SegmentedProgress";
 import { InstallShortcutButton } from "@/components/InstallShortcutButton";
+import { SkyAtmosphere } from "@/components/dashboard/SkyAtmosphere";
 
 type Props = {
   daily: DailyPayload;
+  wallpaperUrl?: string;
+  installUrl?: string;
 };
 
 const container: Variants = {
@@ -20,19 +25,44 @@ const container: Variants = {
 
 const item: Variants = {
   hidden: { opacity: 0, y: 14 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1] } },
+  show: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1] },
+  },
 };
 
-export function DailyDashboard({ daily }: Props) {
-  const { name, progress, phrase, caption, date } = daily;
+export function DailyDashboard({ daily, wallpaperUrl, installUrl }: Props) {
+  const {
+    name,
+    progress,
+    phrase,
+    caption,
+    date,
+    gregorianLabel,
+    hijriLabel,
+    nextHolidayLabel,
+  } = daily;
+  const [period, setPeriod] = useState<SkyPeriod>("night");
+
+  useEffect(() => {
+    const tick = () => setPeriod(getSkyPeriod());
+    tick();
+    const id = window.setInterval(tick, 60_000);
+    return () => window.clearInterval(id);
+  }, []);
+
+  const dayTheme = isDaylike(period);
 
   return (
     <MotionConfig reducedMotion="user">
-      <main className="relative mx-auto flex min-h-dvh w-full max-w-md flex-col overflow-hidden px-5 pb-10 pt-8">
-        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_50%_30%,#100B2A_0%,#080619_70%)]" />
-        <div className="pointer-events-none absolute inset-0 opacity-40 starfield" />
-        <div className="pointer-events-none absolute inset-0 starfield-twinkle" aria-hidden />
-        <div className="pointer-events-none absolute inset-0 starfield-twinkle-b" aria-hidden />
+      <main
+        className={`relative mx-auto flex min-h-dvh w-full max-w-md flex-col overflow-hidden px-5 pb-10 pt-8 ${
+          dayTheme ? "theme-day" : ""
+        }`}
+        data-sky={period}
+      >
+        <SkyAtmosphere />
 
         <motion.div
           className="relative z-10 flex flex-1 flex-col"
@@ -47,17 +77,23 @@ export function DailyDashboard({ daily }: Props) {
             <h1 className="font-display glow-title text-center text-[1.9rem] font-semibold leading-tight tracking-[0.04em] text-[var(--gold)]">
               99 имён Аллаха
             </h1>
-            <p className="font-ui mt-1 text-center text-xs tracking-[0.12em] text-[var(--text-2)]">
-              {date}
+            <p className="font-ui mt-2 text-center text-xs tracking-[0.04em] text-[var(--text-2)]">
+              {gregorianLabel}
+            </p>
+            <p className="font-ui mt-0.5 text-center text-[11px] tracking-[0.02em] text-[var(--gold-soft)]/90">
+              {hijriLabel}
+            </p>
+            <p className="font-ui mt-2 text-center text-[11px] leading-snug text-[var(--text-2)]">
+              {nextHolidayLabel}
             </p>
           </motion.header>
 
-          <motion.section variants={item} className="mt-6">
+          <motion.section variants={item} className="mt-5">
             <div className="flex items-end justify-between gap-3">
               <p className="font-ui text-[11px] font-semibold uppercase tracking-[0.26em] text-[var(--gold-soft)]">
                 {phrase}
               </p>
-              <p className="font-display glow-soft text-base font-semibold tracking-wider text-[var(--gold)]">
+              <p className="font-numerals glow-soft text-base font-semibold tracking-wide text-[var(--gold)]">
                 {progress.percent}%
               </p>
             </div>
@@ -71,7 +107,6 @@ export function DailyDashboard({ daily }: Props) {
           </motion.div>
 
           <motion.div variants={item} className="relative mt-4">
-            {/* soft glow behind Arabic name */}
             <div
               className="halo-gold pointer-events-none absolute left-1/2 top-[14%] h-40 w-72 -translate-x-1/2 rounded-full blur-2xl"
               aria-hidden
@@ -98,10 +133,10 @@ export function DailyDashboard({ daily }: Props) {
               </div>
 
               <p className="font-ui text-[1.75rem] font-bold tracking-wide text-[var(--text)] drop-shadow-[0_0_14px_rgba(245,242,255,0.18)]">
-                {name.uzbekName}
+                {name.russianName}
               </p>
               <p className="font-display glow-soft mt-2 text-xl font-semibold tracking-[0.03em] text-[var(--gold)]">
-                {name.uzbekMeaning}
+                {name.russianMeaning}
               </p>
               <p className="font-ui mt-3 max-w-xs text-sm leading-relaxed tracking-[0.02em] text-[var(--text-2)]">
                 {caption}
@@ -110,21 +145,24 @@ export function DailyDashboard({ daily }: Props) {
           </motion.div>
 
           <motion.div variants={item} className="mt-8 flex flex-col gap-3">
-            <InstallShortcutButton />
+            <InstallShortcutButton
+              wallpaperUrl={wallpaperUrl}
+              installUrl={installUrl}
+            />
             <a
               href={`/api/wallpaper?date=${date}`}
               download={`asma-daily-${date}.png`}
               className="btn-gold-glow font-ui inline-flex h-12 w-full items-center justify-center gap-2 rounded-full border border-[var(--gold)]/40 text-sm font-medium tracking-wide text-[var(--gold)] hover:border-[var(--gold)]/70 hover:bg-[var(--gold)]/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--gold)]"
-              aria-label="Wallpaper yuklab olish"
+              aria-label="Скачать обои"
             >
               <Download className="h-4 w-4" aria-hidden />
-              Wallpaper yuklab olish
+              Скачать обои
             </a>
             <Link
               href="/names"
               className="font-ui inline-flex h-12 w-full items-center justify-center rounded-full text-sm tracking-wide text-[var(--text-2)] transition-colors hover:text-[var(--gold)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--gold)]"
             >
-              Barcha 99 ismni ko‘rish
+              Все 99 имён
             </Link>
           </motion.div>
 
@@ -133,13 +171,13 @@ export function DailyDashboard({ daily }: Props) {
             className="font-ui mt-6 flex justify-center gap-5 text-xs tracking-[0.1em] text-[var(--text-2)]"
           >
             <Link href="/wallpaper" className="transition-colors hover:text-[var(--gold)]">
-              Preview
+              Обои
             </Link>
             <Link href="/setup" className="transition-colors hover:text-[var(--gold)]">
-              Setup
+              Настройка
             </Link>
             <Link href="/about" className="transition-colors hover:text-[var(--gold)]">
-              About
+              О проекте
             </Link>
           </motion.nav>
         </motion.div>

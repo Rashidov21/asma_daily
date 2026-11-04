@@ -1,5 +1,11 @@
 import type { Metadata, Viewport } from "next";
-import { Amiri, Cormorant_Garamond, Cinzel_Decorative, Manrope } from "next/font/google";
+import {
+  Amiri,
+  Cormorant_Garamond,
+  Cinzel_Decorative,
+  Manrope,
+  Source_Serif_4,
+} from "next/font/google";
 import "./globals.css";
 
 // Arabic calligraphy — classic Quranic naskh feel
@@ -34,22 +40,31 @@ const ui = Manrope({
   display: "swap",
 });
 
+// Clear lining numerals for ring index / percent (Cormorant oldstyle digits mismatched)
+const numerals = Source_Serif_4({
+  variable: "--font-numerals-src",
+  subsets: ["latin", "cyrillic"],
+  weight: ["500", "600", "700"],
+  display: "swap",
+});
+
 const siteUrl =
-  process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "") || "https://asma-daily.netlify.app";
+  process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "") ||
+  "https://asma-daily-wallpaper.netlify.app";
 
 export const metadata: Metadata = {
   title: {
-    default: "ASMA DAILY — 99 Names of Allah",
+    default: "ASMA DAILY — 99 имён Аллаха",
     template: "%s · ASMA DAILY",
   },
   description:
-    "Har kuni Allohning 99 ismidan biri. iPhone Lock Screen wallpaper va Shortcuts avtomatlashtirish.",
+    "Каждый день — одно из 99 прекрасных имён Аллаха. Обои для iPhone и автоматизация Shortcuts.",
   metadataBase: new URL(siteUrl),
   openGraph: {
     title: "ASMA DAILY",
-    description: "Daily Name of Allah wallpaper for iPhone",
+    description: "Ежедневные обои с именем Аллаха для iPhone",
     type: "website",
-    locale: "uz_UZ",
+    locale: "ru_RU",
   },
   appleWebApp: {
     capable: true,
@@ -77,9 +92,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="uz">
+    <html lang="ru">
       <body
-        className={`${amiri.variable} ${display.variable} ${cinzel.variable} ${ui.variable} antialiased`}
+        className={`${amiri.variable} ${display.variable} ${cinzel.variable} ${ui.variable} ${numerals.variable} antialiased`}
       >
         {children}
       </body>

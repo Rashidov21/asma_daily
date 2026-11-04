@@ -24,9 +24,9 @@ export function CopyApiUrl({ url }: { url: string }) {
         type="button"
         onClick={onCopy}
         className="h-11 rounded-full border border-[var(--gold)]/40 text-sm text-[var(--gold)]"
-        aria-label="API URL ni nusxalash"
+        aria-label="Скопировать API URL"
       >
-        {copied ? "Nusxa olindi" : "URL ni nusxalash"}
+        {copied ? "Скопировано" : "Скопировать URL"}
       </button>
     </div>
   );

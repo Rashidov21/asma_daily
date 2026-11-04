@@ -10,6 +10,12 @@ import {
   TOTAL_NAMES,
   type DivineName,
 } from "@/data/names";
+import { formatGregorianRu, formatHijriRu } from "@/lib/hijri";
+import {
+  formatDaysUntilRu,
+  getNextIslamicHoliday,
+  type UpcomingHoliday,
+} from "@/lib/islamic-holidays";
 
 export type DailyProgress = {
   current: number;
@@ -25,10 +31,14 @@ export type DailyPayload = {
   name: DivineName;
   phrase: string;
   caption: string;
+  gregorianLabel: string;
+  hijriLabel: string;
+  nextHoliday: UpcomingHoliday;
+  nextHolidayLabel: string;
 };
 
 const DAILY_PHRASE = "СПОКОЙСТВИЕ СЕРДЦА";
-const DAILY_CAPTION = "Qalbingizda takrorlang — biz bilan birga";
+const DAILY_CAPTION = "Повторяй вместе с нами — в сердце";
 
 function resolveDateString(date?: Date | string): string {
   if (typeof date === "string") {
@@ -69,6 +79,12 @@ export function getDailyPayload(date?: Date | string): DailyPayload {
   const dateStr = resolveDateString(date);
   const name = getDailyName(dateStr);
   const progress = getDailyProgress(dateStr);
+  const nextHoliday = getNextIslamicHoliday(dateStr);
+  const when = formatDaysUntilRu(nextHoliday.daysUntil);
+  const nextHolidayLabel = nextHoliday.isToday
+    ? `Сегодня: ${nextHoliday.holiday.nameRu}`
+    : `Скоро: ${nextHoliday.holiday.nameRu} (${when})`;
+
   return {
     date: dateStr,
     timezone: "Asia/Tashkent",
@@ -77,6 +93,10 @@ export function getDailyPayload(date?: Date | string): DailyPayload {
     name,
     phrase: DAILY_PHRASE,
     caption: DAILY_CAPTION,
+    gregorianLabel: formatGregorianRu(dateStr),
+    hijriLabel: formatHijriRu(dateStr),
+    nextHoliday,
+    nextHolidayLabel,
   };
 }
 

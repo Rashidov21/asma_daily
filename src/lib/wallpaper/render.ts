@@ -52,7 +52,7 @@ function buildRingLabels(currentIndex: number, cx: number, cy: number, radius: n
     const opacity = isCurrent ? 1 : 0.55;
     const size = isCurrent ? 13 : 9;
     parts.push(
-      `<text x="${x.toFixed(1)}" y="${y.toFixed(1)}" fill="${fill}" opacity="${opacity}" font-size="${size}" font-family="Helvetica, Arial, sans-serif" text-anchor="middle" dominant-baseline="middle" transform="rotate(${rot.toFixed(2)}, ${x.toFixed(1)}, ${y.toFixed(1)})">${escapeXml(name.uzbekName)}</text>`,
+      `<text x="${x.toFixed(1)}" y="${y.toFixed(1)}" fill="${fill}" opacity="${opacity}" font-size="${size}" font-family="Helvetica, Arial, sans-serif" text-anchor="middle" dominant-baseline="middle" transform="rotate(${rot.toFixed(2)}, ${x.toFixed(1)}, ${y.toFixed(1)})">${escapeXml(name.russianName)}</text>`,
     );
   }
   return parts.join("\n");
@@ -98,7 +98,7 @@ export function buildWallpaperSvg(
   options?: { phrase?: string; caption?: string },
 ): string {
   const phrase = options?.phrase ?? "СПОКОЙСТВИЕ СЕРДЦА";
-  const caption = options?.caption ?? "Qalbingizda takrorlang — biz bilan birga";
+  const caption = options?.caption ?? "Повторяй вместе с нами — в сердце";
   const index = name.id - 1;
   const cx = WALLPAPER_WIDTH / 2;
   // Leave top clearance for Dynamic Island / clock (~420px)
@@ -171,11 +171,15 @@ export function buildWallpaperSvg(
   <polygon points="${cx},1642 ${cx + 8},1650 ${cx},1658 ${cx - 8},1650" fill="${COLORS.gold}"/>
   <line x1="${cx + 20}" y1="1650" x2="${cx + 180}" y2="1650" stroke="${COLORS.goldSoft}" stroke-width="1.5" opacity="0.7"/>
 
-  <text x="${cx}" y="1740" fill="${COLORS.text}" font-size="64" font-family="Helvetica, Arial, sans-serif" font-weight="700" text-anchor="middle">${escapeXml(name.uzbekName)}</text>
-  <text x="${cx}" y="1820" fill="${COLORS.gold}" font-size="40" font-family="Georgia, 'Times New Roman', serif" text-anchor="middle">${escapeXml(name.uzbekMeaning)}</text>
+  <text x="${cx}" y="1740" fill="${COLORS.text}" font-size="64" font-family="Helvetica, Arial, sans-serif" font-weight="700" text-anchor="middle">${escapeXml(name.russianName)}</text>
+  <text x="${cx}" y="1820" fill="${COLORS.gold}" font-size="40" font-family="Georgia, 'Times New Roman', serif" text-anchor="middle">${escapeXml(name.russianMeaning)}</text>
   <text x="${cx}" y="1900" fill="${COLORS.text2}" font-size="26" font-family="Helvetica, Arial, sans-serif" text-anchor="middle">${escapeXml(caption)}</text>
 
-  <text x="${cx}" y="2050" fill="${COLORS.text2}" font-size="22" font-family="Helvetica, Arial, sans-serif" text-anchor="middle" opacity="0.7">${escapeXml(name.shortReflection)}</text>
+  ${
+    name.shortReflection
+      ? `<text x="${cx}" y="2050" fill="${COLORS.text2}" font-size="22" font-family="Helvetica, Arial, sans-serif" text-anchor="middle" opacity="0.7">${escapeXml(name.shortReflection)}</text>`
+      : ""
+  }
   <text x="${cx}" y="2440" fill="${COLORS.goldSoft}" font-size="20" font-family="Helvetica, Arial, sans-serif" text-anchor="middle" opacity="0.6" letter-spacing="9">ASMA DAILY</text>
 </svg>`;
 }

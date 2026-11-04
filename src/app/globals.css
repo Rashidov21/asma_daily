@@ -20,6 +20,7 @@
   --font-arabic: var(--font-amiri), "Noto Naskh Arabic", serif;
   --font-display: var(--font-cormorant), Georgia, "Times New Roman", serif;
   --font-cinzel: var(--font-cinzel-src), var(--font-cormorant), Georgia, serif;
+  --font-numerals: var(--font-numerals-src), Georgia, "Times New Roman", serif;
 }
 
 html,
@@ -48,6 +49,12 @@ body {
 
 .font-cinzel {
   font-family: var(--font-cinzel-src), var(--font-cormorant), Georgia, serif;
+}
+
+.font-numerals {
+  font-family: var(--font-numerals-src), Georgia, "Times New Roman", serif;
+  font-variant-numeric: lining-nums tabular-nums;
+  font-feature-settings: "lnum" 1, "tnum" 1;
 }
 
 /* ---------- Gold glow text ---------- */
@@ -260,6 +267,152 @@ a {
   text-decoration: none;
 }
 
+/* ---------- iPhone-like sky atmosphere ---------- */
+.sky-root[data-period="day"] .sky-gradient {
+  background:
+    radial-gradient(ellipse 120% 80% at 50% -10%, #d8e7f8 0%, transparent 55%),
+    radial-gradient(ellipse 90% 60% at 80% 40%, rgba(255, 236, 210, 0.55) 0%, transparent 50%),
+    linear-gradient(180deg, #9ec0e8 0%, #c5d8ef 38%, #e8e0f0 72%, #d4c4e8 100%);
+}
+
+.sky-root[data-period="dawn"] .sky-gradient {
+  background:
+    radial-gradient(ellipse 100% 70% at 70% 20%, rgba(255, 186, 140, 0.55) 0%, transparent 50%),
+    linear-gradient(180deg, #2a1f4a 0%, #6b4a6e 35%, #c99a88 70%, #e8c4a8 100%);
+}
+
+.sky-root[data-period="dusk"] .sky-gradient {
+  background:
+    radial-gradient(ellipse 100% 60% at 75% 25%, rgba(245, 170, 110, 0.4) 0%, transparent 45%),
+    linear-gradient(180deg, #1a1035 0%, #3d2a55 40%, #8b5a6a 75%, #c48a6a 100%);
+}
+
+.sky-root[data-period="night"] .sky-gradient {
+  background:
+    radial-gradient(ellipse at 50% 30%, #100b2a 0%, #080619 70%);
+}
+
+.sky-haze {
+  background: radial-gradient(
+    ellipse 80% 50% at 50% 20%,
+    rgba(255, 255, 255, 0.28) 0%,
+    transparent 70%
+  );
+}
+
+.sky-milky {
+  background: radial-gradient(
+    ellipse 70% 35% at 60% 35%,
+    rgba(180, 190, 255, 0.08) 0%,
+    transparent 70%
+  );
+}
+
+.sky-vignette {
+  background:
+    radial-gradient(ellipse 90% 70% at 50% 40%, transparent 30%, rgba(8, 6, 25, 0.25) 100%),
+    linear-gradient(180deg, rgba(8, 6, 25, 0.15) 0%, transparent 25%, transparent 60%, rgba(8, 6, 25, 0.45) 100%);
+}
+
+.sky-root[data-period="day"] .sky-vignette {
+  background:
+    radial-gradient(ellipse 90% 70% at 50% 40%, transparent 40%, rgba(30, 40, 80, 0.12) 100%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.1) 0%, transparent 30%, rgba(40, 30, 70, 0.2) 100%);
+}
+
+.sky-cloud {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(28px);
+  opacity: 0.55;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(255, 255, 255, 0.85) 0%,
+    rgba(255, 255, 255, 0.35) 45%,
+    transparent 70%
+  );
+  animation-name: cloud-drift;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  will-change: transform;
+}
+
+.cloud-a {
+  opacity: 0.5;
+  filter: blur(32px);
+}
+.cloud-b {
+  opacity: 0.4;
+  filter: blur(36px);
+}
+.cloud-c {
+  opacity: 0.45;
+  filter: blur(40px);
+}
+.cloud-d {
+  opacity: 0.35;
+  filter: blur(30px);
+}
+.cloud-e {
+  opacity: 0.38;
+  filter: blur(34px);
+}
+
+@keyframes cloud-drift {
+  0% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(12%, -3%, 0) scale(1.04);
+  }
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+}
+
+.sky-star {
+  animation-name: star-breathe;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+}
+
+@keyframes star-breathe {
+  0%,
+  100% {
+    opacity: 0.15;
+    transform: scale(0.92);
+  }
+  40% {
+    opacity: 0.85;
+    transform: scale(1);
+  }
+  70% {
+    opacity: 0.35;
+    transform: scale(0.96);
+  }
+}
+
+/* Day: keep gold readable on lighter sky */
+.theme-day {
+  --text: #1e1838;
+  --text-2: #4a4466;
+  --bg: transparent;
+  --bg-2: rgba(255, 255, 255, 0.35);
+  --muted: rgba(48, 35, 78, 0.35);
+}
+
+.theme-day .glow-arabic,
+.theme-day .glow-title,
+.theme-day .glow-soft {
+  text-shadow:
+    0 0 10px rgba(245, 204, 101, 0.35),
+    0 1px 2px rgba(255, 255, 255, 0.4);
+}
+
+.theme-day .font-cinzel {
+  color: #8a6a28;
+}
+
 /* ---------- Reduced motion ---------- */
 @media (prefers-reduced-motion: reduce) {
   .starfield-twinkle,
@@ -269,7 +422,9 @@ a {
   .marker-pulse,
   .diamond-sparkle,
   .progress-seg-fill,
-  .progress-shimmer {
+  .progress-shimmer,
+  .sky-cloud,
+  .sky-star {
     animation: none !important;
   }
 
@@ -284,5 +439,9 @@ a {
 
   .btn-gold-glow {
     transition: none;
+  }
+
+  .sky-cloud {
+    opacity: 0.4;
   }
 }

@@ -23,6 +23,10 @@
 # misc
 .DS_Store
 *.pem
+.tools/
+
+# Unsigned / local shortcut builds (source of truth is shortcuts/ASMA-Daily.json)
+public/shortcuts/*.shortcut
 
 # debug
 npm-debug.log*

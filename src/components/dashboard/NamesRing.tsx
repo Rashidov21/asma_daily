@@ -107,7 +107,7 @@ export function NamesRing({ names, currentIndex }: Props) {
                 letterSpacing: isCurrent ? "0.04em" : undefined,
               }}
             >
-              {name.uzbekName}
+              {name.russianName}
             </text>
           );
         })}
@@ -165,7 +165,7 @@ export function NamesRing({ names, currentIndex }: Props) {
           key={currentIndex}
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
-          className="font-display glow-title text-4xl font-semibold text-[var(--gold)]"
+          className="font-numerals glow-title text-[2.65rem] font-semibold leading-none tracking-tight text-[var(--gold)]"
         >
           {currentIndex + 1}
         </motion.span>

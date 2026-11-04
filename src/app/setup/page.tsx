@@ -2,22 +2,37 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import { InstallShortcutButton } from "@/components/InstallShortcutButton";
 import { CopyApiUrl } from "@/components/CopyApiUrl";
+import { AutoInstallBanner } from "@/components/AutoInstallBanner";
+import {
+  SHORTCUT_ACTIONS,
+  getShortcutInstallUrl,
+  getWallpaperApiUrl,
+} from "@/lib/shortcut";
 
 export const metadata: Metadata = {
-  title: "iPhone Setup",
-  description: "ASMA DAILY ni iPhone Shortcuts orqali har kuni o‘rnatish",
+  title: "Настройка iPhone",
+  description: "Как установить ASMA DAILY через Shortcuts",
 };
 
-function getWallpaperApiUrl(): string {
-  const base =
-    process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "") ||
-    "https://asma-daily.netlify.app";
-  return `${base}/api/wallpaper`;
-}
+type SearchParams = Promise<Record<string, string | string[] | undefined>>;
 
-export default function SetupPage() {
+export default async function SetupPage({
+  searchParams,
+}: {
+  searchParams: SearchParams;
+}) {
+  const params = await searchParams;
   const apiUrl = getWallpaperApiUrl();
-  const hasInstallLink = Boolean(process.env.NEXT_PUBLIC_SHORTCUT_INSTALL_URL?.trim());
+  const installUrl = getShortcutInstallUrl();
+  const hasInstallLink = Boolean(installUrl);
+  const autoInstall =
+    params.install === "1" ||
+    params.install === "true" ||
+    (typeof params.url === "string" && params.url.length > 0);
+  const overrideUrl =
+    typeof params.url === "string" && params.url.startsWith("http")
+      ? params.url
+      : apiUrl;
 
   return (
     <main className="mx-auto min-h-dvh max-w-md px-5 py-8">
@@ -25,20 +40,27 @@ export default function SetupPage() {
         ← ASMA DAILY
       </Link>
       <h1 className="mt-4 font-display text-3xl text-[var(--gold)]">
-        iPhone&apos;ga o&apos;rnatish
+        Установка на iPhone
       </h1>
       <p className="mt-3 text-sm leading-relaxed text-[var(--text-2)]">
-        Sayt o‘zi Lock Screen wallpaperini o‘zgartira olmaydi. Buning uchun
-        Apple Shortcuts kerak. Bitta tugma bilan Shortcut qo‘shing, keyin kunlik
-        avtomatlashtirishni yoqing.
+        Сайт сам не может сменить обои экрана блокировки. Для этого нужны Apple
+        Shortcuts. Кнопка ниже запускает установку на iPhone.
       </p>
 
+      {autoInstall && <AutoInstallBanner wallpaperUrl={overrideUrl} />}
+
       <div className="mt-8">
-        <InstallShortcutButton />
+        <InstallShortcutButton
+          wallpaperUrl={overrideUrl}
+          installUrl={installUrl}
+          showHint
+        />
         {!hasInstallLink && (
           <p className="mt-3 text-xs text-[var(--text-2)]">
-            iCloud Shortcut linki hali sozlanmagan — quyidagi qo‘lda yo‘riqnoma
-            bilan o‘zingiz yarating.
+            Ссылка iCloud Shortcut ещё не задана — кнопка скопирует API URL и
+            откроет Shortcuts. Готовую ссылку укажите в{" "}
+            <code className="text-[var(--gold)]">NEXT_PUBLIC_SHORTCUT_INSTALL_URL</code>
+            , тогда одним нажатием откроется «Add Shortcut».
           </p>
         )}
       </div>
@@ -46,46 +68,54 @@ export default function SetupPage() {
       <section className="mt-10">
         <h2 className="font-display text-xl text-[var(--text)]">API URL</h2>
         <p className="mt-2 text-sm text-[var(--text-2)]">
-          Shortcuts «Get Contents of URL» uchun:
+          Для действия Shortcuts «Get Contents of URL»:
         </p>
-        <CopyApiUrl url={apiUrl} />
+        <CopyApiUrl url={overrideUrl} />
       </section>
 
       <section className="mt-10 space-y-4 text-sm leading-relaxed text-[var(--text-2)]">
         <h2 className="font-display text-xl text-[var(--text)]">
-          Kunlik avtomatlashtirish
+          Шаги Shortcut
+        </h2>
+        <ol className="list-decimal space-y-3 pl-5">
+          {SHORTCUT_ACTIONS.map((step) => (
+            <li key={step.title}>
+              <strong className="text-[var(--text)]">{step.title}</strong>
+              <span className="block text-[var(--text-2)]">{step.detail}</span>
+            </li>
+          ))}
+        </ol>
+        <p>
+          Файл рецепта:{" "}
+          <code className="text-[var(--gold)]">shortcuts/ASMA-Daily.json</code>
+        </p>
+      </section>
+
+      <section className="mt-10 space-y-4 text-sm leading-relaxed text-[var(--text-2)]">
+        <h2 className="font-display text-xl text-[var(--text)]">
+          Ежедневная автоматизация
         </h2>
         <ol className="list-decimal space-y-3 pl-5">
           <li>
-            <strong className="text-[var(--text)]">Shortcuts</strong> ilovasini
-            oching.
+            <strong className="text-[var(--text)]">Shortcuts</strong> →{" "}
+            <em>Automation</em> → <em>Time of Day</em>.
           </li>
           <li>
-            Yangi Shortcut: <em>Get Contents of URL</em> → yuqoridagi API URL
-            (GET).
+            Каждый день в выбранное время запускайте Shortcut «ASMA Daily».
           </li>
           <li>
-            Natijani rasm sifatida oling, keyin{" "}
-            <em>Set Wallpaper</em> (Lock Screen) yoki{" "}
-            <em>Save to Photo Album</em>.
-          </li>
-          <li>
-            <strong className="text-[var(--text)]">Automation</strong> →{" "}
-            <em>Time of Day</em> → har kuni tanlangan vaqtda shu Shortcutni
-            ishga tushiring.
-          </li>
-          <li>
-            iOS ba’zan tasdiqlash so‘rashi mumkin — bu Apple cheklovi; sayt
-            buni chetlab o‘ta olmaydi.
+            iOS иногда просит подтверждение — это ограничение Apple; сайт обойти
+            его не может.
           </li>
         </ol>
       </section>
 
       <section className="mt-10 rounded-2xl border border-[var(--muted)] bg-[var(--bg-2)]/60 p-4 text-sm text-[var(--text-2)]">
-        <p className="font-medium text-[var(--gold)]">Muhim</p>
+        <p className="font-medium text-[var(--gold)]">Важно</p>
         <p className="mt-2">
-          Veb-sayt iPhone wallpaperini mustaqil o‘zgartira olmaydi. Faqat PNG
-          beradi; o‘rnatishni Shortcuts / Automation bajaradi.
+          Веб-сайт сам не меняет обои iPhone. Он только отдаёт PNG; установку
+          выполняют Shortcuts / Automation. Для «Add Shortcut» в один тап нужна
+          ссылка iCloud (Shortcuts → Share → Copy iCloud Link).
         </p>
       </section>
     </main>

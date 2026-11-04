@@ -7,6 +7,7 @@
 
 [build.environment]
   NODE_VERSION = "22"
+  NEXT_PUBLIC_SITE_URL = "https://asma-daily-wallpaper.netlify.app"
 
 [functions]
   node_bundler = "esbuild"
