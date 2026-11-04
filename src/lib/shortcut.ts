@@ -16,7 +16,7 @@ export const SHORTCUT_ACTIONS = [
   {
     title: "Get Contents of URL",
     detail:
-      "GET → https://asma-daily-wallpaper.netlify.app/api/wallpaper",
+      "GET → https://asma-daily-wallpaper.netlify.app/api/wallpaper (har kuni — datesiz). Test: ?date=2026-11-06",
   },
   {
     title: "Set Wallpaper Photo",

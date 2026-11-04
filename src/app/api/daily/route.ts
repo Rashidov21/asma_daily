@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { getDailyPayload, isValidDateParam } from "@/lib/daily-name";
 
 export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
 
 export async function GET(request: NextRequest) {
   const dateParam = request.nextUrl.searchParams.get("date");

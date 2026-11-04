@@ -3,6 +3,7 @@ import { getDailyPayload, isValidDateParam } from "@/lib/daily-name";
 import { renderWallpaperPng } from "@/lib/wallpaper/render";
 
 export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
 export const maxDuration = 30;
 
 export async function GET(request: NextRequest) {
