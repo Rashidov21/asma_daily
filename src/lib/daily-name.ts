@@ -2,6 +2,7 @@ import { differenceInCalendarDays } from "date-fns";
 import {
   getAnchorDate,
   getTashkentDateString,
+  normalizeCalendarDateString,
   parseCalendarDate,
   tashkentDayStartUtc,
 } from "@/lib/timezone";
@@ -42,11 +43,11 @@ const DAILY_CAPTION = "Повторяй вместе с нами — в серд
 
 function resolveDateString(date?: Date | string): string {
   if (typeof date === "string") {
-    const parsed = parseCalendarDate(date);
-    if (!parsed) {
+    const normalized = normalizeCalendarDateString(date);
+    if (!normalized) {
       throw new Error(`Invalid date: ${date}`);
     }
-    return date;
+    return normalized;
   }
   return getTashkentDateString(date ?? new Date());
 }

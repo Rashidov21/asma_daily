@@ -31,6 +31,11 @@ describe("daily-name rotation", () => {
     expect(getDailyName("2025-01-02").id).toBe(2);
   });
 
+  it("accepts unpadded Shortcut-style dates", () => {
+    expect(getDailyNameIndex("2025-1-2")).toBe(getDailyNameIndex("2025-01-02"));
+    expect(getDailyName("2026-11-6").id).toBe(getDailyName("2026-11-06").id);
+  });
+
   it("99th day is index 98 (name 99)", () => {
     // 2025-01-01 + 98 days = 2025-04-09
     expect(getDailyNameIndex("2025-04-09")).toBe(98);

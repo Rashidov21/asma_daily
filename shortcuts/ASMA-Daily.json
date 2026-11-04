@@ -41,6 +41,7 @@
         "WFWallpaperLocation": ["Lock Screen"],
         "WFWallpaperShowPreview": false,
         "WFWallpaperSmartCrop": false,
+        "WFWallpaperPerspectiveZoom": false,
         "WFInput": {
           "Value": {
             "OutputName": "ASMA Wallpaper",

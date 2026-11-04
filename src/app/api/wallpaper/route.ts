@@ -24,15 +24,18 @@ export async function GET(request: NextRequest) {
       nextHolidayLabel: daily.nextHolidayLabel,
     });
 
+    // Avoid sticky CDN cache so daily Shortcuts always get today's PNG.
+    // Netlify ignores query strings in cache keys unless Netlify-Vary lists them.
     const cacheControl = dateParam
       ? "public, max-age=86400, immutable"
-      : "public, s-maxage=300, stale-while-revalidate=60";
+      : "public, max-age=0, s-maxage=120, must-revalidate";
 
     return new NextResponse(new Uint8Array(png), {
       status: 200,
       headers: {
         "Content-Type": "image/png",
         "Cache-Control": cacheControl,
+        "Netlify-Vary": "query=date",
         "Content-Disposition": `inline; filename="asma-daily-${daily.date}.png"`,
       },
     });

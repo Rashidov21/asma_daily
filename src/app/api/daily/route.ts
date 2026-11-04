@@ -20,6 +20,8 @@ export async function GET(request: NextRequest) {
         "Cache-Control": dateParam
           ? "public, max-age=86400, immutable"
           : "public, s-maxage=300, stale-while-revalidate=60",
+        // Netlify ignores query strings in cache keys unless Netlify-Vary lists them.
+        "Netlify-Vary": "query=date",
       },
     });
   } catch (error) {

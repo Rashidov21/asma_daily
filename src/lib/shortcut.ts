@@ -15,14 +15,19 @@ export function getShortcutInstallUrl(): string | undefined {
 export const SHORTCUT_ACTIONS = [
   {
     title: "Get Contents of URL",
-    detail: "Метод: GET → URL API обоев",
+    detail:
+      "GET → https://asma-daily-wallpaper.netlify.app/api/wallpaper",
   },
   {
-    title: "Set Wallpaper",
-    detail: "Экран: Lock Screen (Show Preview: выкл.)",
+    title: "Set Wallpaper Photo",
+    detail:
+      "Lock Screen. Show Preview: выкл. Crop to Subject: выкл. В поле Wallpaper выберите свой Photos-локскрин.",
   },
-  {
-    title: "Show Notification",
-    detail: "Заголовок: ASMA Daily — обои установлены",
-  },
+] as const;
+
+export const WALLPAPER_FIX_STEPS = [
+  "Lock Screen-ni bosib turing → + → Photos → istalgan rasm → Add → Set as Wallpaper Pair (Photo Shuffle/Emoji/Color emas).",
+  "Shortcuts → shortcutni Edit → Set Wallpaper Photo qo‘shing (faqat Get Contents of URL bo‘lsa — fon o‘zgarmaydi).",
+  "Set Wallpaper Photo ichida ko‘k Wallpaper so‘zini bosing → yangi Photos lokskrinni tanlang.",
+  "Show Preview va Crop to Subject o‘chirilsin → ▶ bilan ishga tushiring.",
 ] as const;
