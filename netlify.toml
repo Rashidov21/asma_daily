@@ -8,6 +8,7 @@
 [build.environment]
   NODE_VERSION = "22"
   NEXT_PUBLIC_SITE_URL = "https://asma-daily-wallpaper.netlify.app"
+  NEXT_PUBLIC_SHORTCUT_INSTALL_URL = "https://www.icloud.com/shortcuts/0b452400712940afb2e2f7410c6cd683"
 
 [functions]
   node_bundler = "esbuild"
