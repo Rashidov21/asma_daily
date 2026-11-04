@@ -1,4 +1,7 @@
+import { readFileSync } from "node:fs";
+import path from "node:path";
 import sharp from "sharp";
+import * as hb from "harfbuzzjs";
 import { NAMES, type DivineName } from "@/data/names";
 import type { DailyProgress } from "@/lib/daily-name";
 
@@ -7,7 +10,7 @@ export const WALLPAPER_HEIGHT = 2556;
 
 const COLORS = {
   bg: "#080619",
-  bg2: "#100B2A",
+  bg2: "#120D30",
   gold: "#F5CC65",
   goldSoft: "#D7B65D",
   text: "#F5F2FF",
@@ -15,105 +18,215 @@ const COLORS = {
   muted: "#30234E",
 };
 
-function escapeXml(s: string): string {
-  return s
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&apos;");
+/**
+ * Layout (iPhone Lock Screen, 1179x2556):
+ *  0-520     empty: clock / Dynamic Island / widgets
+ *  ~600      soft header
+ *  680-1440  dial
+ *  1450+     name block
+ */
+const LAYOUT = {
+  headerY: 610,
+  dialCy: 1060,
+  dotsR: 330,
+  outerR: 385,
+  innerR: 255,
+  arabicBaseline: 1690,
+  dividerY: 1770,
+  russianBaseline: 1885,
+  meaningBaseline: 1965,
+  captionBaseline: 2045,
+  brandBaseline: 2400,
+  maxTextWidth: 880,
+};
+
+/* ------------------------------------------------------------------ */
+/* Fonts → SVG paths                                                   */
+/*                                                                     */
+/* librsvg (used by sharp) ignores @font-face and depends on system    */
+/* fonts, so Cyrillic/Arabic turn into tofu on servers. Instead we     */
+/* shape text with HarfBuzz (WASM; Arabic joining + mark positioning)  */
+/* and emit glyph outlines as <path>. No font is needed at raster time */
+/* and the result is identical on every machine.                       */
+/* ------------------------------------------------------------------ */
+
+const FONT_DIR = path.join(process.cwd(), "src", "lib", "wallpaper", "fonts");
+
+type LoadedFont = { font: hb.Font; upem: number; glyphs: Map<number, string> };
+const fontCache = new Map<string, LoadedFont>();
+
+function loadFont(file: string): LoadedFont {
+  let loaded = fontCache.get(file);
+  if (!loaded) {
+    const data = readFileSync(path.join(FONT_DIR, file));
+    const blob = new hb.Blob(
+      data.buffer.slice(data.byteOffset, data.byteOffset + data.byteLength) as ArrayBuffer,
+    );
+    const face = new hb.Face(blob);
+    loaded = { font: new hb.Font(face), upem: face.upem, glyphs: new Map() };
+    fontCache.set(file, loaded);
+  }
+  return loaded;
 }
+
+const FONTS = {
+  sans: () => loadFont("NotoSans-Regular.ttf"),
+  sansBold: () => loadFont("NotoSans-Bold.ttf"),
+  arabic: () => loadFont("Amiri-Regular.ttf"),
+};
+
+type TextOptions = {
+  font: LoadedFont;
+  text: string;
+  x: number;
+  baseline: number;
+  size: number;
+  fill: string;
+  opacity?: number;
+  letterSpacing?: number;
+  /** Shrink font size so the line never exceeds this width. */
+  maxWidth?: number;
+  filter?: string;
+};
+
+function textPath(opts: TextOptions): string {
+  const { font: loaded, text, fill } = opts;
+  if (!text) return "";
+
+  const buffer = new hb.Buffer();
+  buffer.addText(text);
+  buffer.guessSegmentProperties(); // detects script + RTL for Arabic
+  hb.shape(loaded.font, buffer);
+  const infos = buffer.getGlyphInfos();
+  const positions = buffer.getGlyphPositions();
+
+  const spacing = opts.letterSpacing ?? 0;
+  const advanceSum = positions.reduce((sum, p) => sum + p.xAdvance, 0);
+  const widthAt = (size: number) =>
+    (advanceSum * size) / loaded.upem + spacing * Math.max(0, infos.length - 1);
+
+  let size = opts.size;
+  if (opts.maxWidth && widthAt(size) > opts.maxWidth) {
+    size = size * (opts.maxWidth / widthAt(size));
+  }
+  const scale = size / loaded.upem;
+  let penX = opts.x - widthAt(size) / 2;
+
+  const parts: string[] = [];
+  infos.forEach((info, i) => {
+    const pos = positions[i]!;
+    const gid = info.codepoint; // glyph id after shaping
+    let d = loaded.glyphs.get(gid);
+    if (d === undefined) {
+      d = loaded.font.glyphToPath(gid);
+      loaded.glyphs.set(gid, d);
+    }
+    if (d) {
+      const gx = penX + pos.xOffset * scale;
+      const gy = opts.baseline - pos.yOffset * scale;
+      parts.push(
+        `<path transform="translate(${gx.toFixed(2)} ${gy.toFixed(2)}) scale(${scale.toFixed(5)} ${(-scale).toFixed(5)})" d="${d}"/>`,
+      );
+    }
+    penX += pos.xAdvance * scale + spacing;
+  });
+
+  const attrs = [
+    `fill="${fill}"`,
+    opts.opacity !== undefined ? `opacity="${opts.opacity}"` : "",
+    opts.filter ? `filter="url(#${opts.filter})"` : "",
+  ]
+    .filter(Boolean)
+    .join(" ");
+  return `<g ${attrs}>${parts.join("")}</g>`;
+}
+
+/* ------------------------------------------------------------------ */
+/* Decorative pieces                                                   */
+/* ------------------------------------------------------------------ */
 
 function buildStars(count: number): string {
   const stars: string[] = [];
+  const minY = 560; // keep the clock area clean
   for (let i = 0; i < count; i++) {
-    const x = ((i * 97) % 1000) / 1000;
-    const y = ((i * 53) % 1000) / 1000;
-    const r = 0.6 + (i % 3) * 0.4;
-    const opacity = 0.15 + (i % 5) * 0.08;
+    const x = ((i * 97 + 31) % 1000) / 1000;
+    const y = ((i * 53 + 17) % 1000) / 1000;
+    const py = minY + y * (WALLPAPER_HEIGHT - minY);
+    const r = 0.8 + (i % 3) * 0.45;
+    const opacity = 0.12 + (i % 5) * 0.06;
     stars.push(
-      `<circle cx="${(x * WALLPAPER_WIDTH).toFixed(1)}" cy="${(y * WALLPAPER_HEIGHT).toFixed(1)}" r="${r}" fill="${COLORS.gold}" opacity="${opacity.toFixed(2)}"/>`,
+      `<circle cx="${(x * WALLPAPER_WIDTH).toFixed(1)}" cy="${py.toFixed(1)}" r="${r}" fill="${COLORS.gold}" opacity="${opacity.toFixed(2)}"/>`,
     );
   }
   return stars.join("\n");
 }
 
-function buildRingLabels(currentIndex: number, cx: number, cy: number, radius: number): string {
-  const parts: string[] = [];
+/** 99 dots around the ring: passed = gold, upcoming = dim, current = glowing. */
+function buildDots(currentIndex: number, cx: number, cy: number, radius: number): string {
   const n = NAMES.length;
+  const parts: string[] = [];
   for (let i = 0; i < n; i++) {
     const angle = (i / n) * Math.PI * 2 - Math.PI / 2;
     const x = cx + Math.cos(angle) * radius;
     const y = cy + Math.sin(angle) * radius;
-    const rot = (angle * 180) / Math.PI + 90;
-    const name = NAMES[i]!;
-    const isCurrent = i === currentIndex;
-    const fill = isCurrent ? COLORS.gold : COLORS.text;
-    const opacity = isCurrent ? 1 : 0.55;
-    const size = isCurrent ? 13 : 9;
+    if (i === currentIndex) continue;
+    const passed = i < currentIndex;
+    const quarter = i % 9 === 0;
+    const r = quarter ? 4.2 : 3;
+    const fill = passed ? COLORS.gold : COLORS.text2;
+    const opacity = passed ? (quarter ? 0.9 : 0.65) : quarter ? 0.4 : 0.22;
     parts.push(
-      `<text x="${x.toFixed(1)}" y="${y.toFixed(1)}" fill="${fill}" opacity="${opacity}" font-size="${size}" font-family="Helvetica, Arial, sans-serif" text-anchor="middle" dominant-baseline="middle" transform="rotate(${rot.toFixed(2)}, ${x.toFixed(1)}, ${y.toFixed(1)})">${escapeXml(name.russianName)}</text>`,
+      `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${r}" fill="${fill}" opacity="${opacity}"/>`,
     );
   }
   return parts.join("\n");
 }
 
-function buildProgressSegments(
-  progress: DailyProgress,
-  x: number,
-  y: number,
-  width: number,
-  height: number,
-): string {
-  const segments = 33;
-  const gap = 4;
-  const segW = (width - gap * (segments - 1)) / segments;
-  const filled = Math.round((progress.current / progress.total) * segments);
-  const rects: string[] = [];
-  for (let i = 0; i < segments; i++) {
-    const sx = x + i * (segW + gap);
-    const color = i < filled ? COLORS.gold : COLORS.muted;
-    const opacity = i < filled ? 1 : 0.55;
-    rects.push(
-      `<rect x="${sx.toFixed(1)}" y="${y}" width="${segW.toFixed(1)}" height="${height}" rx="2" fill="${color}" opacity="${opacity}"/>`,
-    );
-  }
-  return rects.join("\n");
+/** Rub el Hizb: two overlapping squares (one rotated 45°) + inner circle. */
+function rubElHizb(cx: number, cy: number, s: number): string {
+  const sq = (rot: number, stroke: string, w: number, op: number) =>
+    `<rect x="${-s / Math.SQRT2}" y="${-s / Math.SQRT2}" width="${(s * 2) / Math.SQRT2}" height="${(s * 2) / Math.SQRT2}" transform="rotate(${rot})" fill="none" stroke="${stroke}" stroke-width="${w}" stroke-linejoin="round" opacity="${op}"/>`;
+  return `
+    <g transform="translate(${cx} ${cy})" filter="url(#softGlow)">
+      ${sq(0, COLORS.gold, 2.6, 0.95)}
+      ${sq(45, COLORS.gold, 2.6, 0.95)}
+      <circle r="${s * 0.62}" fill="${COLORS.bg}" fill-opacity="0.6" stroke="${COLORS.goldSoft}" stroke-width="1.4" opacity="0.7"/>
+    </g>`;
 }
 
-function rubElHizb(cx: number, cy: number, size: number): string {
-  const s = size;
-  return `
-    <g transform="translate(${cx}, ${cy})">
-      <polygon points="0,${-s} ${s * 0.35},${-s * 0.35} ${s},0 ${s * 0.35},${s * 0.35} 0,${s} ${-s * 0.35},${s * 0.35} ${-s},0 ${-s * 0.35},${-s * 0.35}" fill="none" stroke="${COLORS.gold}" stroke-width="2.5" opacity="0.95"/>
-      <polygon points="0,${-s * 0.72} ${s * 0.25},${-s * 0.25} ${s * 0.72},0 ${s * 0.25},${s * 0.25} 0,${s * 0.72} ${-s * 0.25},${s * 0.25} ${-s * 0.72},0 ${-s * 0.25},${-s * 0.25}" fill="none" stroke="${COLORS.goldSoft}" stroke-width="1.5" opacity="0.7"/>
-      <circle cx="0" cy="0" r="${s * 0.42}" fill="none" stroke="${COLORS.gold}" stroke-width="1.2" opacity="0.5"/>
-    </g>
-  `;
-}
+/* ------------------------------------------------------------------ */
+/* Main                                                                */
+/* ------------------------------------------------------------------ */
 
 export function buildWallpaperSvg(
   name: DivineName,
   progress: DailyProgress,
   options?: { phrase?: string; caption?: string },
 ): string {
-  const phrase = options?.phrase ?? "СПОКОЙСТВИЕ СЕРДЦА";
   const caption = options?.caption ?? "Повторяй вместе с нами — в сердце";
   const index = name.id - 1;
   const cx = WALLPAPER_WIDTH / 2;
-  // Leave top clearance for Dynamic Island / clock (~420px)
-  const ringCy = 980;
-  const ringR = 340;
-  const labelR = 390;
+  const { dialCy: cy, dotsR, outerR, innerR } = LAYOUT;
+
+  const sans = FONTS.sans();
+  const sansBold = FONTS.sansBold();
+  const arabic = FONTS.arabic();
 
   const pointerAngle = (index / NAMES.length) * Math.PI * 2 - Math.PI / 2;
-  const px = cx + Math.cos(pointerAngle) * (ringR - 20);
-  const py = ringCy + Math.sin(pointerAngle) * (ringR - 20);
+  const px = cx + Math.cos(pointerAngle) * dotsR;
+  const py = cy + Math.sin(pointerAngle) * dotsR;
+  const pStartX = cx + Math.cos(pointerAngle) * 135;
+  const pStartY = cy + Math.sin(pointerAngle) * 135;
+  const pEndX = cx + Math.cos(pointerAngle) * (dotsR - 18);
+  const pEndY = cy + Math.sin(pointerAngle) * (dotsR - 18);
+
+  const numberText = String(progress.current);
+  const numberSize = numberText.length > 2 ? 54 : 66;
 
   return `<?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" width="${WALLPAPER_WIDTH}" height="${WALLPAPER_HEIGHT}" viewBox="0 0 ${WALLPAPER_WIDTH} ${WALLPAPER_HEIGHT}">
   <defs>
-    <radialGradient id="bg" cx="50%" cy="35%" r="75%">
+    <radialGradient id="bg" cx="50%" cy="42%" r="70%">
       <stop offset="0%" stop-color="${COLORS.bg2}"/>
       <stop offset="100%" stop-color="${COLORS.bg}"/>
     </radialGradient>
@@ -121,66 +234,55 @@ export function buildWallpaperSvg(
       <stop offset="0%" stop-color="${COLORS.gold}" stop-opacity="0.35"/>
       <stop offset="100%" stop-color="${COLORS.gold}" stop-opacity="0"/>
     </radialGradient>
+    <linearGradient id="pointer" gradientUnits="userSpaceOnUse" x1="${pStartX.toFixed(1)}" y1="${pStartY.toFixed(1)}" x2="${pEndX.toFixed(1)}" y2="${pEndY.toFixed(1)}">
+      <stop offset="0%" stop-color="${COLORS.gold}" stop-opacity="0"/>
+      <stop offset="100%" stop-color="${COLORS.gold}" stop-opacity="0.7"/>
+    </linearGradient>
     <filter id="softGlow" x="-50%" y="-50%" width="200%" height="200%">
-      <feGaussianBlur stdDeviation="8" result="blur"/>
-      <feMerge>
-        <feMergeNode in="blur"/>
-        <feMergeNode in="SourceGraphic"/>
-      </feMerge>
+      <feGaussianBlur stdDeviation="6" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
     </filter>
     <filter id="textGlow" x="-30%" y="-60%" width="160%" height="220%">
-      <feGaussianBlur stdDeviation="6" result="blur"/>
-      <feMerge>
-        <feMergeNode in="blur"/>
-        <feMergeNode in="SourceGraphic"/>
-      </feMerge>
+      <feGaussianBlur stdDeviation="9" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
     </filter>
   </defs>
 
   <rect width="100%" height="100%" fill="url(#bg)"/>
-  ${buildStars(80)}
+  ${buildStars(70)}
 
-  <!-- Header: below clock safe zone -->
-  <text x="${cx}" y="460" fill="${COLORS.gold}" font-size="52" font-family="Georgia, 'Times New Roman', serif" font-weight="700" letter-spacing="2" text-anchor="middle" filter="url(#textGlow)">99 имён Аллаха</text>
+  <!-- Soft header (below clock safe zone) -->
+  ${textPath({ font: sans, text: "99 имён Аллаха", x: cx, baseline: LAYOUT.headerY, size: 32, fill: COLORS.gold, opacity: 0.75, letterSpacing: 3, maxWidth: LAYOUT.maxTextWidth })}
 
-  <text x="90" y="530" fill="${COLORS.text2}" font-size="22" font-family="Helvetica, Arial, sans-serif" letter-spacing="5">${escapeXml(phrase)}</text>
-  <text x="${WALLPAPER_WIDTH - 90}" y="530" fill="${COLORS.gold}" font-size="26" font-family="Helvetica, Arial, sans-serif" font-weight="600" text-anchor="end">${progress.percent}%</text>
+  <!-- Dial -->
+  <circle cx="${cx}" cy="${cy}" r="${outerR}" fill="none" stroke="${COLORS.goldSoft}" stroke-width="1.2" opacity="0.35"/>
+  <circle cx="${cx}" cy="${cy}" r="${innerR}" fill="none" stroke="${COLORS.muted}" stroke-width="1.2" opacity="0.7"/>
+  <circle cx="${cx}" cy="${cy}" r="${dotsR - 38}" fill="none" stroke="${COLORS.muted}" stroke-width="1" opacity="0.45"/>
 
-  ${buildProgressSegments(progress, 90, 555, WALLPAPER_WIDTH - 180, 10)}
+  ${buildDots(index, cx, cy, dotsR)}
 
-  <!-- Ring -->
-  <circle cx="${cx}" cy="${ringCy}" r="${ringR + 50}" fill="none" stroke="${COLORS.muted}" stroke-width="1" opacity="0.5"/>
-  <circle cx="${cx}" cy="${ringCy}" r="${ringR}" fill="none" stroke="${COLORS.goldSoft}" stroke-width="1.5" opacity="0.45"/>
-  <circle cx="${cx}" cy="${ringCy}" r="${ringR - 70}" fill="none" stroke="${COLORS.muted}" stroke-width="1" opacity="0.4"/>
+  <!-- Pointer -->
+  <line x1="${pStartX.toFixed(1)}" y1="${pStartY.toFixed(1)}" x2="${pEndX.toFixed(1)}" y2="${pEndY.toFixed(1)}" stroke="url(#pointer)" stroke-width="2" stroke-linecap="round"/>
+  <circle cx="${px.toFixed(1)}" cy="${py.toFixed(1)}" r="34" fill="url(#glow)"/>
+  <circle cx="${px.toFixed(1)}" cy="${py.toFixed(1)}" r="9" fill="${COLORS.gold}" filter="url(#softGlow)"/>
 
-  ${buildRingLabels(index, cx, ringCy, labelR)}
-
-  <!-- Pointer glow -->
-  <circle cx="${px.toFixed(1)}" cy="${py.toFixed(1)}" r="28" fill="url(#glow)" filter="url(#softGlow)"/>
-  <line x1="${cx}" y1="${ringCy}" x2="${px.toFixed(1)}" y2="${py.toFixed(1)}" stroke="${COLORS.gold}" stroke-width="2" opacity="0.85"/>
-  <circle cx="${px.toFixed(1)}" cy="${py.toFixed(1)}" r="6" fill="${COLORS.gold}"/>
-
-  ${rubElHizb(cx, ringCy, 78)}
-  <text x="${cx}" y="${ringCy + 14}" fill="${COLORS.text}" font-size="56" font-family="Georgia, 'Times New Roman', serif" font-weight="700" text-anchor="middle">${progress.current}</text>
+  <!-- Center -->
+  ${rubElHizb(cx, cy, 128)}
+  ${textPath({ font: sansBold, text: numberText, x: cx, baseline: cy + numberSize * 0.36, size: numberSize, fill: COLORS.text })}
 
   <!-- Name block -->
-  <ellipse cx="${cx}" cy="1555" rx="260" ry="90" fill="url(#glow)" opacity="0.8"/>
-  <text x="${cx}" y="1580" fill="${COLORS.gold}" font-size="110" font-family="Amiri, 'Noto Naskh Arabic', 'Noto Sans Arabic', 'Arabic Typesetting', 'Geeza Pro', serif" text-anchor="middle" direction="rtl" filter="url(#textGlow)">${escapeXml(name.arabic)}</text>
+  <ellipse cx="${cx}" cy="${LAYOUT.arabicBaseline - 50}" rx="300" ry="100" fill="url(#glow)" opacity="0.7"/>
+  ${textPath({ font: arabic, text: name.arabic, x: cx, baseline: LAYOUT.arabicBaseline, size: 170, fill: COLORS.gold, maxWidth: LAYOUT.maxTextWidth, filter: "textGlow" })}
 
-  <line x1="${cx - 180}" y1="1650" x2="${cx - 20}" y2="1650" stroke="${COLORS.goldSoft}" stroke-width="1.5" opacity="0.7"/>
-  <polygon points="${cx},1642 ${cx + 8},1650 ${cx},1658 ${cx - 8},1650" fill="${COLORS.gold}"/>
-  <line x1="${cx + 20}" y1="1650" x2="${cx + 180}" y2="1650" stroke="${COLORS.goldSoft}" stroke-width="1.5" opacity="0.7"/>
+  <line x1="${cx - 190}" y1="${LAYOUT.dividerY}" x2="${cx - 22}" y2="${LAYOUT.dividerY}" stroke="${COLORS.goldSoft}" stroke-width="1.5" opacity="0.7"/>
+  <polygon points="${cx},${LAYOUT.dividerY - 8} ${cx + 8},${LAYOUT.dividerY} ${cx},${LAYOUT.dividerY + 8} ${cx - 8},${LAYOUT.dividerY}" fill="${COLORS.gold}"/>
+  <line x1="${cx + 22}" y1="${LAYOUT.dividerY}" x2="${cx + 190}" y2="${LAYOUT.dividerY}" stroke="${COLORS.goldSoft}" stroke-width="1.5" opacity="0.7"/>
 
-  <text x="${cx}" y="1740" fill="${COLORS.text}" font-size="64" font-family="Helvetica, Arial, sans-serif" font-weight="700" text-anchor="middle">${escapeXml(name.russianName)}</text>
-  <text x="${cx}" y="1820" fill="${COLORS.gold}" font-size="40" font-family="Georgia, 'Times New Roman', serif" text-anchor="middle">${escapeXml(name.russianMeaning)}</text>
-  <text x="${cx}" y="1900" fill="${COLORS.text2}" font-size="26" font-family="Helvetica, Arial, sans-serif" text-anchor="middle">${escapeXml(caption)}</text>
+  ${textPath({ font: sansBold, text: name.russianName, x: cx, baseline: LAYOUT.russianBaseline, size: 76, fill: COLORS.text, maxWidth: LAYOUT.maxTextWidth })}
+  ${textPath({ font: sans, text: name.russianMeaning, x: cx, baseline: LAYOUT.meaningBaseline, size: 46, fill: COLORS.gold, maxWidth: LAYOUT.maxTextWidth })}
+  ${textPath({ font: sans, text: caption, x: cx, baseline: LAYOUT.captionBaseline, size: 28, fill: COLORS.text2, opacity: 0.85, maxWidth: LAYOUT.maxTextWidth })}
 
-  ${
-    name.shortReflection
-      ? `<text x="${cx}" y="2050" fill="${COLORS.text2}" font-size="22" font-family="Helvetica, Arial, sans-serif" text-anchor="middle" opacity="0.7">${escapeXml(name.shortReflection)}</text>`
-      : ""
-  }
-  <text x="${cx}" y="2440" fill="${COLORS.goldSoft}" font-size="20" font-family="Helvetica, Arial, sans-serif" text-anchor="middle" opacity="0.6" letter-spacing="9">ASMA DAILY</text>
+  ${textPath({ font: sans, text: "ASMA DAILY", x: cx, baseline: LAYOUT.brandBaseline, size: 20, fill: COLORS.goldSoft, opacity: 0.55, letterSpacing: 9 })}
 </svg>`;
 }
 
