@@ -1,36 +1,89 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# ASMA DAILY
 
-## Getting Started
+Premium Islamic daily wallpaper web app — one of the **99 Names of Allah** each day, with an iPhone Lock Screen PNG endpoint for Apple Shortcuts.
 
-First, run the development server:
+## Features
+
+- Mobile-first dashboard matching the gold / navy circular visualization design
+- Deterministic daily rotation in **Asia/Tashkent**
+- `GET /api/wallpaper` → real `image/png` (1179×2556)
+- One-tap **iPhone'ga o'rnatish** (iCloud Shortcut link via env)
+- Netlify-ready Next.js App Router deployment
+- No authentication required
+
+## Stack
+
+Next.js 15 · TypeScript · Tailwind CSS · Framer Motion · Sharp · Vitest · Netlify
+
+## Quick start
 
 ```bash
+npm install
+cp .env.example .env.local
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Environment
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+| Variable | Purpose |
+|----------|---------|
+| `DAILY_ANCHOR_DATE` | Day 1 of the cycle (`YYYY-MM-DD`, default `2025-01-01`) |
+| `NEXT_PUBLIC_SITE_URL` | Public origin for `/setup` copyable API URL |
+| `NEXT_PUBLIC_SHORTCUT_INSTALL_URL` | iCloud Shortcuts share link for one-tap install |
 
-## Learn More
+## API
 
-To learn more about Next.js, take a look at the following resources:
+| Endpoint | Response |
+|----------|----------|
+| `GET /api/daily` | Today's name JSON |
+| `GET /api/daily?date=YYYY-MM-DD` | Name for date |
+| `GET /api/wallpaper` | Today's PNG |
+| `GET /api/wallpaper?date=YYYY-MM-DD` | PNG for date |
+| `GET /api/names` | All 99 names |
+| `GET /api/names/[id]` | Single name (`1`–`99`) |
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Verify PNG locally:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```bash
+curl -sI http://localhost:3000/api/wallpaper
+curl -s http://localhost:3000/api/wallpaper -o /tmp/asma.png
+file /tmp/asma.png
+```
 
-## Deploy on Vercel
+## Tests
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```bash
+npm test
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Covers first/second/99th/100th day, leap years, and Tashkent midnight boundaries.
+
+## iPhone Shortcuts
+
+1. Set `NEXT_PUBLIC_SHORTCUT_INSTALL_URL` to your shared Shortcut, **or** follow `/setup`.
+2. Shortcut should `GET` `{SITE}/api/wallpaper` and set / save Lock Screen wallpaper.
+3. Add a Personal Automation (Time of Day) to run daily.
+
+The website cannot change the Lock Screen by itself — Shortcuts must.
+
+## Netlify deploy
+
+1. Connect the repo to Netlify.
+2. Build command: `npm run build` (see `netlify.toml`).
+3. Set env vars in the Netlify UI.
+4. Confirm: `curl -sI https://YOUR_SITE/api/wallpaper` returns `image/png`.
+
+## Pages
+
+- `/` — daily dashboard
+- `/names` — all 99
+- `/names/[slug]` — detail
+- `/wallpaper` — PNG preview + download
+- `/setup` — Shortcuts guide + install CTA
+- `/about` — project info
+
+## Content note
+
+Arabic spellings follow the classical Asma ul-Husna sequence. Uzbek meanings are concise conventional glosses for daily reflection — not fatwa or exhaustive tafsir.
