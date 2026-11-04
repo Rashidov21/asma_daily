@@ -44,7 +44,9 @@ export default async function SetupPage({
       </h1>
       <p className="mt-3 text-sm leading-relaxed text-[var(--text-2)]">
         Сайт сам не может сменить обои экрана блокировки. Для этого нужны Apple
-        Shortcuts. Кнопка ниже запускает установку на iPhone.
+        Shortcuts. Кнопка открывает страницу iCloud «Get Shortcut» — там нажмите{" "}
+        <strong className="text-[var(--text)]">Add Shortcut</strong>. Не
+        скачивайте .shortcut файл вручную (будет ошибка формата).
       </p>
 
       {autoInstall && <AutoInstallBanner wallpaperUrl={overrideUrl} />}

@@ -20,6 +20,8 @@ export async function GET(request: NextRequest) {
     const png = await renderWallpaperPng(daily.name, daily.progress, {
       phrase: daily.phrase,
       caption: daily.caption,
+      hijriLabel: daily.hijriLabel,
+      nextHolidayLabel: daily.nextHolidayLabel,
     });
 
     const cacheControl = dateParam

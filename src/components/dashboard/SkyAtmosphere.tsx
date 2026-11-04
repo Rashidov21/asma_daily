@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { getSkyPeriod, type SkyPeriod } from "@/lib/sky-period";
 
 function SoftCloud({
@@ -24,55 +24,57 @@ function SoftCloud({
   );
 }
 
-function NaturalStars() {
-  // Fixed pseudo-random field — stable across renders, varied sizes/opacities
-  const stars = [
-    [8, 12, 1.2, 0.35, 0],
-    [22, 8, 0.8, 0.55, 1.2],
-    [38, 18, 1.4, 0.4, 2.1],
-    [55, 6, 0.7, 0.7, 0.4],
-    [72, 14, 1.1, 0.45, 3.2],
-    [88, 10, 0.9, 0.6, 1.8],
-    [12, 32, 0.7, 0.5, 4.1],
-    [28, 28, 1.6, 0.3, 0.9],
-    [48, 36, 0.8, 0.65, 2.7],
-    [66, 30, 1.0, 0.4, 5.0],
-    [82, 40, 0.7, 0.55, 1.5],
-    [94, 26, 1.3, 0.35, 3.8],
-    [6, 52, 0.9, 0.45, 2.3],
-    [18, 58, 1.1, 0.3, 4.6],
-    [35, 48, 0.6, 0.7, 0.6],
-    [52, 55, 1.5, 0.35, 3.0],
-    [70, 62, 0.8, 0.5, 1.1],
-    [86, 50, 1.0, 0.4, 5.4],
-    [15, 72, 0.7, 0.55, 2.0],
-    [42, 78, 1.2, 0.3, 4.2],
-    [60, 70, 0.9, 0.6, 0.3],
-    [78, 82, 0.7, 0.45, 3.5],
-    [92, 68, 1.1, 0.35, 1.7],
-    [25, 88, 0.8, 0.5, 2.9],
-    [50, 92, 1.0, 0.4, 5.1],
-  ] as const;
+/** Deterministic star field — denser, brighter, natural twinkle via CSS var. */
+function NaturalStars({ count = 90 }: { count?: number }) {
+  const stars = useMemo(() => {
+    const out: Array<{
+      x: number;
+      y: number;
+      size: number;
+      op: number;
+      delay: number;
+      dur: number;
+      bright: boolean;
+    }> = [];
+    for (let i = 0; i < count; i++) {
+      // Simple LCG-ish mix for stable positions
+      const n = (i * 2654435761) >>> 0;
+      const x = ((n % 1000) / 10) % 100;
+      const y = ((((n >>> 10) % 1000) / 10) % 100);
+      const size = 1.2 + (i % 5) * 0.55 + (i % 7 === 0 ? 1.2 : 0);
+      const op = 0.35 + (i % 6) * 0.1;
+      const delay = (i % 17) * 0.37;
+      const dur = 3.2 + (i % 8) * 0.55;
+      out.push({ x, y, size, op, delay, dur, bright: i % 11 === 0 });
+    }
+    return out;
+  }, [count]);
 
   return (
     <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden>
+      {/* Soft milky-way haze */}
       <div className="sky-milky absolute inset-0" />
-      {stars.map(([x, y, size, base, delay], i) => (
+      {/* Extra CSS speck layer for depth */}
+      <div className="sky-starfield-dense absolute inset-0" />
+      {stars.map((s, i) => (
         <span
           key={i}
-          className="sky-star absolute rounded-full bg-[#FFF6E0]"
+          className={`sky-star absolute rounded-full ${s.bright ? "sky-star-bright" : ""}`}
           style={{
-            left: `${x}%`,
-            top: `${y}%`,
-            width: size,
-            height: size,
-            opacity: base,
-            animationDelay: `${delay}s`,
-            animationDuration: `${4.5 + (i % 5) * 1.1}s`,
-            boxShadow:
-              size > 1.1
-                ? `0 0 ${size * 3}px rgba(255, 246, 224, 0.45)`
-                : undefined,
+            left: `${s.x}%`,
+            top: `${s.y}%`,
+            width: s.size,
+            height: s.size,
+            // CSS var so animation doesn't wipe base brightness
+            ["--star-op" as string]: String(s.op),
+            animationDelay: `${s.delay}s`,
+            animationDuration: `${s.dur}s`,
+            boxShadow: s.bright
+              ? `0 0 ${s.size * 4}px rgba(255, 246, 224, 0.85), 0 0 ${s.size * 8}px rgba(245, 204, 101, 0.35)`
+              : `0 0 ${s.size * 2.5}px rgba(255, 246, 224, 0.55)`,
+            background: s.bright
+              ? "radial-gradient(circle, #fff 0%, #FFE9A8 55%, transparent 100%)"
+              : "#FFF6E0",
           }}
         />
       ))}
@@ -97,7 +99,7 @@ export function SkyAtmosphere() {
 
   return (
     <div
-      className={`sky-root pointer-events-none absolute inset-0 transition-opacity duration-1000 ${
+      className={`sky-root pointer-events-none absolute inset-0 transition-opacity duration-700 ${
         ready ? "opacity-100" : "opacity-0"
       }`}
       data-period={period}
@@ -108,7 +110,11 @@ export function SkyAtmosphere() {
       {showClouds && (
         <div
           className={`absolute inset-0 overflow-hidden transition-opacity duration-[2s] ${
-            period === "day" ? "opacity-100" : period === "dawn" || period === "dusk" ? "opacity-55" : "opacity-0"
+            period === "day"
+              ? "opacity-100"
+              : period === "dawn" || period === "dusk"
+                ? "opacity-55"
+                : "opacity-0"
           }`}
         >
           <div className="sky-haze absolute inset-0" />
@@ -122,15 +128,14 @@ export function SkyAtmosphere() {
 
       {showStars && (
         <div
-          className={`absolute inset-0 transition-opacity duration-[2s] ${
-            period === "night" ? "opacity-100" : "opacity-40"
+          className={`absolute inset-0 transition-opacity duration-[1.2s] ${
+            period === "night" ? "opacity-100" : "opacity-55"
           }`}
         >
-          <NaturalStars />
+          <NaturalStars count={period === "night" ? 110 : 60} />
         </div>
       )}
 
-      {/* Soft vignette so content stays readable */}
       <div className="sky-vignette absolute inset-0" />
     </div>
   );

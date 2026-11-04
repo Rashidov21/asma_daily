@@ -12,11 +12,6 @@ export function getShortcutInstallUrl(): string | undefined {
   return url || undefined;
 }
 
-/** Deep-link that opens Shortcuts' import UI for an iCloud share URL. */
-export function toShortcutsImportDeepLink(icloudUrl: string): string {
-  return `shortcuts://import-shortcut?url=${encodeURIComponent(icloudUrl)}&name=${encodeURIComponent("ASMA Daily")}`;
-}
-
 export const SHORTCUT_ACTIONS = [
   {
     title: "Get Contents of URL",

@@ -77,15 +77,17 @@ export function DailyDashboard({ daily, wallpaperUrl, installUrl }: Props) {
             <h1 className="font-display glow-title text-center text-[1.9rem] font-semibold leading-tight tracking-[0.04em] text-[var(--gold)]">
               99 имён Аллаха
             </h1>
-            <p className="font-ui mt-2 text-center text-xs tracking-[0.04em] text-[var(--text-2)]">
-              {gregorianLabel}
-            </p>
-            <p className="font-ui mt-0.5 text-center text-[11px] tracking-[0.02em] text-[var(--gold-soft)]/90">
-              {hijriLabel}
-            </p>
-            <p className="font-ui mt-2 text-center text-[11px] leading-snug text-[var(--text-2)]">
-              {nextHolidayLabel}
-            </p>
+            <div className="mt-3 space-y-1.5 text-center">
+              <p className="font-ui text-sm tracking-[0.04em] text-[var(--text)]">
+                {gregorianLabel}
+              </p>
+              <p className="font-ui text-sm tracking-[0.02em] text-[var(--gold)]">
+                {hijriLabel}
+              </p>
+              <p className="font-ui mx-auto mt-2 inline-flex max-w-[92%] rounded-full border border-[var(--gold)]/30 bg-[var(--gold)]/10 px-3 py-1.5 text-[12px] leading-snug text-[var(--gold-soft)]">
+                {nextHolidayLabel}
+              </p>
+            </div>
           </motion.header>
 
           <motion.section variants={item} className="mt-5">

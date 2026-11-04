@@ -26,11 +26,13 @@ const COLORS = {
  *  1450+     name block
  */
 const LAYOUT = {
-  headerY: 610,
-  dialCy: 1060,
-  dotsR: 330,
-  outerR: 385,
-  innerR: 255,
+  headerY: 590,
+  hijriY: 640,
+  holidayY: 685,
+  dialCy: 1080,
+  dotsR: 320,
+  outerR: 375,
+  innerR: 250,
   arabicBaseline: 1690,
   dividerY: 1770,
   russianBaseline: 1885,
@@ -152,10 +154,14 @@ function buildStars(count: number): string {
     const x = ((i * 97 + 31) % 1000) / 1000;
     const y = ((i * 53 + 17) % 1000) / 1000;
     const py = minY + y * (WALLPAPER_HEIGHT - minY);
-    const r = 0.8 + (i % 3) * 0.45;
-    const opacity = 0.12 + (i % 5) * 0.06;
+    const bright = i % 9 === 0;
+    const r = bright ? 2.2 + (i % 3) * 0.5 : 1.1 + (i % 4) * 0.4;
+    const opacity = bright ? 0.55 + (i % 3) * 0.12 : 0.28 + (i % 5) * 0.08;
+    const glow = bright
+      ? `<circle cx="${(x * WALLPAPER_WIDTH).toFixed(1)}" cy="${py.toFixed(1)}" r="${(r * 3).toFixed(1)}" fill="${COLORS.gold}" opacity="0.12"/>`
+      : "";
     stars.push(
-      `<circle cx="${(x * WALLPAPER_WIDTH).toFixed(1)}" cy="${py.toFixed(1)}" r="${r}" fill="${COLORS.gold}" opacity="${opacity.toFixed(2)}"/>`,
+      `${glow}<circle cx="${(x * WALLPAPER_WIDTH).toFixed(1)}" cy="${py.toFixed(1)}" r="${r}" fill="${bright ? "#FFF6E0" : COLORS.gold}" opacity="${opacity.toFixed(2)}"/>`,
     );
   }
   return stars.join("\n");
@@ -201,9 +207,16 @@ function rubElHizb(cx: number, cy: number, s: number): string {
 export function buildWallpaperSvg(
   name: DivineName,
   progress: DailyProgress,
-  options?: { phrase?: string; caption?: string },
+  options?: {
+    phrase?: string;
+    caption?: string;
+    hijriLabel?: string;
+    nextHolidayLabel?: string;
+  },
 ): string {
   const caption = options?.caption ?? "Повторяй вместе с нами — в сердце";
+  const hijriLabel = options?.hijriLabel?.trim() ?? "";
+  const holidayLabel = options?.nextHolidayLabel?.trim() ?? "";
   const index = name.id - 1;
   const cx = WALLPAPER_WIDTH / 2;
   const { dialCy: cy, dotsR, outerR, innerR } = LAYOUT;
@@ -249,10 +262,38 @@ export function buildWallpaperSvg(
   </defs>
 
   <rect width="100%" height="100%" fill="url(#bg)"/>
-  ${buildStars(70)}
+  ${buildStars(140)}
 
   <!-- Soft header (below clock safe zone) -->
   ${textPath({ font: sans, text: "99 имён Аллаха", x: cx, baseline: LAYOUT.headerY, size: 32, fill: COLORS.gold, opacity: 0.75, letterSpacing: 3, maxWidth: LAYOUT.maxTextWidth })}
+  ${
+    hijriLabel
+      ? textPath({
+          font: sans,
+          text: hijriLabel.replace(/\s*г\.\s*AH\s*$/i, "").trim(),
+          x: cx,
+          baseline: LAYOUT.hijriY,
+          size: 26,
+          fill: COLORS.goldSoft,
+          opacity: 0.9,
+          maxWidth: LAYOUT.maxTextWidth,
+        })
+      : ""
+  }
+  ${
+    holidayLabel
+      ? textPath({
+          font: sans,
+          text: holidayLabel,
+          x: cx,
+          baseline: LAYOUT.holidayY,
+          size: 24,
+          fill: COLORS.text2,
+          opacity: 0.95,
+          maxWidth: LAYOUT.maxTextWidth,
+        })
+      : ""
+  }
 
   <!-- Dial -->
   <circle cx="${cx}" cy="${cy}" r="${outerR}" fill="none" stroke="${COLORS.goldSoft}" stroke-width="1.2" opacity="0.35"/>
@@ -289,7 +330,12 @@ export function buildWallpaperSvg(
 export async function renderWallpaperPng(
   name: DivineName,
   progress: DailyProgress,
-  options?: { phrase?: string; caption?: string },
+  options?: {
+    phrase?: string;
+    caption?: string;
+    hijriLabel?: string;
+    nextHolidayLabel?: string;
+  },
 ): Promise<Buffer> {
   const svg = buildWallpaperSvg(name, progress, options);
   return sharp(Buffer.from(svg))

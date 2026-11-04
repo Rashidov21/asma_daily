@@ -1,27 +1,18 @@
 import { NextRequest, NextResponse } from "next/server";
-import {
-  getShortcutInstallUrl,
-  getWallpaperApiUrl,
-  toShortcutsImportDeepLink,
-} from "@/lib/shortcut";
+import { getShortcutInstallUrl, getWallpaperApiUrl } from "@/lib/shortcut";
 
 export const runtime = "nodejs";
 
 /**
  * One-tap install entry.
- * - If NEXT_PUBLIC_SHORTCUT_INSTALL_URL is set → redirect to Shortcuts import (iCloud).
- * - Else → redirect to /setup with the wallpaper API URL ready.
+ * Always redirect to the plain iCloud HTTPS page (Get Shortcut).
+ * Avoid shortcuts://import-shortcut — iOS often rejects it as wrong format.
  */
 export async function GET(request: NextRequest) {
   const install = getShortcutInstallUrl();
-  const preferDeepLink = request.nextUrl.searchParams.get("deep") === "1";
 
   if (install) {
-    const target =
-      preferDeepLink || request.nextUrl.searchParams.get("app") === "1"
-        ? toShortcutsImportDeepLink(install)
-        : install;
-    return NextResponse.redirect(target, 302);
+    return NextResponse.redirect(install, 302);
   }
 
   const setup = new URL("/setup", request.nextUrl.origin);

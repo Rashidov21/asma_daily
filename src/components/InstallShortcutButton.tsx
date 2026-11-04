@@ -16,10 +16,6 @@ type Props = {
 const baseClass =
   "btn-gold-glow font-ui inline-flex h-14 w-full items-center justify-center rounded-full bg-[var(--gold)] px-8 text-base font-semibold tracking-wide text-[#1a1230] hover:bg-[#f8d77f] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--gold)]";
 
-function toImportDeepLink(icloudUrl: string): string {
-  return `shortcuts://import-shortcut?url=${encodeURIComponent(icloudUrl)}&name=${encodeURIComponent("ASMA Daily")}`;
-}
-
 export function InstallShortcutButton({
   className,
   wallpaperUrl,
@@ -31,7 +27,10 @@ export function InstallShortcutButton({
   const [hint, setHint] = useState<string | null>(null);
 
   const resolvedInstall = useMemo(
-    () => installUrl?.trim() || process.env.NEXT_PUBLIC_SHORTCUT_INSTALL_URL?.trim() || "",
+    () =>
+      installUrl?.trim() ||
+      process.env.NEXT_PUBLIC_SHORTCUT_INSTALL_URL?.trim() ||
+      "",
     [installUrl],
   );
 
@@ -44,39 +43,21 @@ export function InstallShortcutButton({
     [wallpaperUrl],
   );
 
-  async function onInstall() {
+  async function onFallbackInstall() {
     setBusy(true);
     setHint(null);
-
     try {
-      if (resolvedInstall) {
-        // Prefer Shortcuts app deep-link on iOS; iCloud page as fallback.
-        const isIOS =
-          typeof navigator !== "undefined" &&
-          /iPhone|iPad|iPod/i.test(navigator.userAgent);
-        window.location.href = isIOS
-          ? toImportDeepLink(resolvedInstall)
-          : resolvedInstall;
-        return;
-      }
-
-      // No published iCloud link yet: copy API URL + open Shortcuts + guide.
       try {
         await navigator.clipboard.writeText(apiUrl);
       } catch {
         /* clipboard may be blocked */
       }
-
       setHint(
-        "API URL скопирован. Открываем Shortcuts — вставьте в Get Contents of URL.",
+        "API URL скопирован. Откроется Shortcuts — вставьте в Get Contents of URL.",
       );
-
-      // Give the toast a tick to paint, then jump into Shortcuts.
       window.setTimeout(() => {
         window.location.href = "shortcuts://";
       }, 350);
-
-      // If Shortcuts scheme is ignored (desktop), send user to setup.
       window.setTimeout(() => {
         if (document.visibilityState === "visible") {
           window.location.href = `/setup?install=1&url=${encodeURIComponent(apiUrl)}`;
@@ -87,16 +68,16 @@ export function InstallShortcutButton({
     }
   }
 
+  // iCloud HTTPS link — Safari opens Apple's "Get Shortcut" page (reliable on iPhone).
+  // Do NOT use shortcuts://import-shortcut — it often shows "incorrect format".
   if (resolvedInstall) {
     return (
       <a
         href={resolvedInstall}
+        target="_blank"
+        rel="noopener noreferrer"
         className={cls}
         aria-label="Установить на iPhone — добавить Shortcut"
-        onClick={(e) => {
-          e.preventDefault();
-          void onInstall();
-        }}
       >
         Установить на iPhone
       </a>
@@ -110,7 +91,7 @@ export function InstallShortcutButton({
         className={cls}
         aria-label="Установить на iPhone — установка Shortcut"
         disabled={busy}
-        onClick={() => void onInstall()}
+        onClick={() => void onFallbackInstall()}
       >
         {busy ? "Подготовка…" : "Установить на iPhone"}
       </button>

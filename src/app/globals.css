@@ -303,9 +303,46 @@ a {
 .sky-milky {
   background: radial-gradient(
     ellipse 70% 35% at 60% 35%,
-    rgba(180, 190, 255, 0.08) 0%,
+    rgba(180, 190, 255, 0.14) 0%,
     transparent 70%
   );
+}
+
+/* Dense far-field speckles (always-on night depth) */
+.sky-starfield-dense {
+  opacity: 0.85;
+  background-image:
+    radial-gradient(1px 1px at 12% 18%, rgba(255, 246, 224, 0.7), transparent),
+    radial-gradient(1.5px 1.5px at 28% 8%, rgba(245, 204, 101, 0.55), transparent),
+    radial-gradient(1px 1px at 44% 22%, rgba(255, 255, 255, 0.5), transparent),
+    radial-gradient(1px 1px at 61% 11%, rgba(255, 246, 224, 0.65), transparent),
+    radial-gradient(1.5px 1.5px at 78% 19%, rgba(245, 204, 101, 0.5), transparent),
+    radial-gradient(1px 1px at 91% 7%, rgba(255, 255, 255, 0.45), transparent),
+    radial-gradient(1px 1px at 7% 42%, rgba(255, 246, 224, 0.55), transparent),
+    radial-gradient(1.5px 1.5px at 19% 55%, rgba(245, 204, 101, 0.4), transparent),
+    radial-gradient(1px 1px at 33% 38%, rgba(255, 255, 255, 0.5), transparent),
+    radial-gradient(1px 1px at 52% 48%, rgba(255, 246, 224, 0.6), transparent),
+    radial-gradient(1.5px 1.5px at 68% 41%, rgba(245, 204, 101, 0.45), transparent),
+    radial-gradient(1px 1px at 84% 52%, rgba(255, 255, 255, 0.4), transparent),
+    radial-gradient(1px 1px at 15% 72%, rgba(255, 246, 224, 0.5), transparent),
+    radial-gradient(1.5px 1.5px at 41% 78%, rgba(245, 204, 101, 0.4), transparent),
+    radial-gradient(1px 1px at 57% 66%, rgba(255, 255, 255, 0.45), transparent),
+    radial-gradient(1px 1px at 73% 81%, rgba(255, 246, 224, 0.55), transparent),
+    radial-gradient(1.5px 1.5px at 89% 69%, rgba(245, 204, 101, 0.4), transparent),
+    radial-gradient(1px 1px at 25% 91%, rgba(255, 255, 255, 0.35), transparent),
+    radial-gradient(1px 1px at 48% 88%, rgba(255, 246, 224, 0.45), transparent),
+    radial-gradient(1px 1px at 96% 90%, rgba(245, 204, 101, 0.35), transparent);
+  animation: sky-field-twinkle 7s ease-in-out infinite;
+}
+
+@keyframes sky-field-twinkle {
+  0%,
+  100% {
+    opacity: 0.55;
+  }
+  50% {
+    opacity: 0.95;
+  }
 }
 
 .sky-vignette {
@@ -371,24 +408,32 @@ a {
 }
 
 .sky-star {
-  animation-name: star-breathe;
+  --star-op: 0.6;
+  background: #fff6e0;
+  opacity: var(--star-op);
+  animation-name: star-twinkle;
   animation-timing-function: ease-in-out;
   animation-iteration-count: infinite;
+  will-change: opacity, transform;
 }
 
-@keyframes star-breathe {
+.sky-star-bright {
+  z-index: 1;
+}
+
+@keyframes star-twinkle {
   0%,
   100% {
-    opacity: 0.15;
-    transform: scale(0.92);
+    opacity: calc(var(--star-op) * 0.45);
+    transform: scale(0.9);
   }
-  40% {
-    opacity: 0.85;
+  35% {
+    opacity: 1;
+    transform: scale(1.15);
+  }
+  60% {
+    opacity: calc(var(--star-op) * 0.7);
     transform: scale(1);
-  }
-  70% {
-    opacity: 0.35;
-    transform: scale(0.96);
   }
 }
 
@@ -424,8 +469,17 @@ a {
   .progress-seg-fill,
   .progress-shimmer,
   .sky-cloud,
-  .sky-star {
+  .sky-star,
+  .sky-starfield-dense {
     animation: none !important;
+  }
+
+  .sky-star {
+    opacity: var(--star-op, 0.7) !important;
+  }
+
+  .sky-starfield-dense {
+    opacity: 0.75 !important;
   }
 
   .starfield-twinkle,
