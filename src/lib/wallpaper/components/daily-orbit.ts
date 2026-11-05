@@ -70,7 +70,7 @@ export function DailyOrbit(opts: {
   }
 
   const numberText = String(currentNumber);
-  const numberSize = numberText.length > 2 ? 50 : 62;
+  const numberSize = numberText.length > 2 ? 54 : 68;
   const sansBold = FONTS.sansBold();
 
   return `
@@ -95,6 +95,8 @@ export function DailyOrbit(opts: {
       baseline: cy + numberSize * 0.36,
       size: numberSize,
       fill: colors.text,
+      stroke: colors.text,
+      strokeWidth: 1.35,
     })}
   </g>`;
 }

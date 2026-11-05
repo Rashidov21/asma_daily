@@ -58,9 +58,9 @@ describe("wallpaper render", () => {
         const svg = buildWallpaperSvg(name, progress, opts);
         expect(svg).toContain('id="arabic-calligraphy"');
         expect(svg).toContain('id="daily-orbit"');
-        expect(svg).toContain('id="decorative-frame"');
-        expect(svg).toContain('id="daily-reflection"');
         expect(svg).toContain('id="islamic-pattern"');
+        expect(svg).not.toContain('id="decorative-frame"');
+        expect(svg).not.toContain('id="daily-reflection"');
         expect(svg.length).toBeGreaterThan(5_000);
         if (longIds.has(name.id)) {
           const png = await renderWallpaperPng(name, progress, {

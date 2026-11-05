@@ -1,5 +1,4 @@
 import {
-  WALLPAPER_HEIGHT,
   WALLPAPER_WIDTH,
   type DailyVariation,
   type ThemeColors,
@@ -32,22 +31,10 @@ export function IslamicPattern(opts: {
     )
     .join("");
 
-  // Soft corner motifs (away from Dynamic Island / edges)
-  const motif = (x: number, y: number, scale: number) => `
-    <g transform="translate(${x} ${y}) scale(${scale})" opacity="${(op * 2.2).toFixed(3)}">
-      ${star(28, 1)}
-      <circle r="10" fill="none" stroke="${colors.pattern}" stroke-width="0.7"/>
-    </g>`;
-
   return `
   <g id="islamic-pattern" transform="translate(${cx} ${cy}) rotate(${rot.toFixed(1)})">
     ${rings}
     ${star(90, op * 1.8)}
     ${star(55, op * 2.2)}
-  </g>
-  ${motif(120, 780, 0.85)}
-  ${motif(WALLPAPER_WIDTH - 120, 780, 0.85)}
-  ${motif(130, WALLPAPER_HEIGHT - 280, 0.7)}
-  ${motif(WALLPAPER_WIDTH - 130, WALLPAPER_HEIGHT - 280, 0.7)}
-  `;
+  </g>`;
 }

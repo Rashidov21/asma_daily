@@ -5,8 +5,6 @@ import {
   ArabicCalligraphy,
   DailyMeaning,
   DailyOrbit,
-  DailyReflection,
-  DecorativeFrame,
   IslamicPattern,
   WallpaperBackground,
   WallpaperFooter,
@@ -56,7 +54,6 @@ export function buildWallpaperSvg(
   ${wallpaperDefs({ colors, theme, variation, pointer })}
   ${WallpaperBackground({ theme, colors, variation })}
   ${IslamicPattern({ colors, variation })}
-  ${DecorativeFrame({ colors })}
   ${WallpaperFooter({
     colors,
     caption,
@@ -71,7 +68,6 @@ export function buildWallpaperSvg(
   })}
   ${ArabicCalligraphy({ name, colors, theme })}
   ${DailyMeaning({ name, colors })}
-  ${DailyReflection({ name, colors })}
 </svg>`;
 }
 

@@ -39,6 +39,9 @@ export type TextOptions = {
   /** Shrink font size so the line never exceeds this width. */
   maxWidth?: number;
   filter?: string;
+  /** Fake-bold outline for numbers / emphasis. */
+  stroke?: string;
+  strokeWidth?: number;
 };
 
 /** Shape text with HarfBuzz and emit glyph outlines as SVG paths. */
@@ -86,6 +89,9 @@ export function textPath(opts: TextOptions): string {
 
   const attrs = [
     `fill="${fill}"`,
+    opts.stroke ? `stroke="${opts.stroke}"` : "",
+    opts.strokeWidth !== undefined ? `stroke-width="${opts.strokeWidth}"` : "",
+    opts.stroke ? `paint-order="stroke fill"` : "",
     opts.opacity !== undefined ? `opacity="${opts.opacity}"` : "",
     opts.filter ? `filter="url(#${opts.filter})"` : "",
   ]

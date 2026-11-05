@@ -37,16 +37,18 @@ function starField(colors: ThemeColors, variation: DailyVariation): string {
   return `<g id="starfield">${stars.join("\n")}</g>`;
 }
 
-/** Soft paper atmosphere for ivory light theme. */
+/** Soft paper atmosphere for ivory light theme — centered composition. */
 function paperAtmosphere(colors: ThemeColors, variation: DailyVariation): string {
-  const shift = variation.gradientShift;
+  const cx = WALLPAPER_WIDTH / 2;
+  const shift = variation.gradientShift * 0.35;
   return `
-    <ellipse cx="${280 + shift}" cy="820" rx="340" ry="100" fill="${colors.bg2}" opacity="0.7"/>
-    <ellipse cx="${920 - shift}" cy="980" rx="360" ry="110" fill="#FFFFFF" opacity="0.28"/>
-    <ellipse cx="${500 + shift * 0.5}" cy="1280" rx="400" ry="120" fill="${colors.bg2}" opacity="0.45"/>
-    <ellipse cx="200" cy="1580" rx="280" ry="85" fill="#FFFFFF" opacity="0.2"/>
-    <circle cx="${880 + shift}" cy="720" r="70" fill="${colors.gold}" opacity="0.07"/>
-    <circle cx="${880 + shift}" cy="720" r="36" fill="${colors.goldSoft}" opacity="0.1"/>
+    <ellipse cx="${cx}" cy="820" rx="380" ry="110" fill="${colors.bg2}" opacity="0.65"/>
+    <ellipse cx="${cx - 220 + shift}" cy="1000" rx="300" ry="95" fill="#FFFFFF" opacity="0.22"/>
+    <ellipse cx="${cx + 220 - shift}" cy="1000" rx="300" ry="95" fill="#FFFFFF" opacity="0.22"/>
+    <ellipse cx="${cx}" cy="1300" rx="420" ry="125" fill="${colors.bg2}" opacity="0.4"/>
+    <ellipse cx="${cx}" cy="1600" rx="320" ry="90" fill="#FFFFFF" opacity="0.18"/>
+    <circle cx="${cx}" cy="740" r="64" fill="${colors.gold}" opacity="0.06"/>
+    <circle cx="${cx}" cy="740" r="32" fill="${colors.goldSoft}" opacity="0.09"/>
   `;
 }
 
