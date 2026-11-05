@@ -1,0 +1,58 @@
+[/api/daily]
+  http=200 ctype=application/json bytes=836
+  progress {'current': 80, 'total': 99, 'percent': 81} id 80 err None
+
+[/api/daily?start=2026-11-05&date=2026-11-05]
+  http=200 ctype=application/json bytes=823
+  progress {'current': 1, 'total': 99, 'percent': 1} id 1 err None
+
+[/api/daily?start=2026-11-05&date=2026-11-07]
+  http=200 ctype=application/json bytes=811
+  progress {'current': 3, 'total': 99, 'percent': 3} id 3 err None
+
+[/api/daily?start=bad]
+  http=400 ctype=application/json bytes=67
+  progress None id None err Invalid start. Use YYYY-MM-DD (install day → name 1).
+
+[/api/wallpaper?start=2026-11-05&date=2026-11-05]
+  http=200 ctype=image/png bytes=457245
+  file=PNG image data, 1179 x 2556, 8-bit/color RGBA, non-interlaced
+
+[/api/wallpaper?start=2026-11-05&date=2026-11-07&theme=light]
+  http=200 ctype=image/png bytes=717400
+  file=PNG image data, 1179 x 2556, 8-bit/color RGBA, non-interlaced
+
+[/api/wallpaper?date=not-a-date]
+  http=400 ctype=application/json bytes=41
+  progress None id None err Invalid date. Use YYYY-MM-DD.
+
+[/api/wallpaper?start=bad]
+  http=400 ctype=application/json bytes=67
+  progress None id None err Invalid start. Use YYYY-MM-DD (install day → name 1).
+
+[/api/names]
+  http=200 ctype=application/json bytes=21693
+  progress None id None err None
+
+[/api/names/1]
+  http=200 ctype=application/json bytes=217
+  progress None id None err None
+
+[/]
+  http=200 ctype=text/html; charset=utf-8 bytes=84836
+
+[/setup]
+  http=200 ctype=text/html; charset=utf-8 bytes=23275
+
+[/wallpaper]
+  http=200 ctype=text/html; charset=utf-8 bytes=16327
+
+[/names]
+  http=200 ctype=text/html; charset=utf-8 bytes=146856
+
+[/about]
+  http=200 ctype=text/html; charset=utf-8 bytes=15239
+
+[/api/shortcut]
+  http=302 ctype= bytes=0
+

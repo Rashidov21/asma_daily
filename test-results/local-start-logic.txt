@@ -1,0 +1,4 @@
+start day0 id 1 progress 1
+start day2 id 3 progress 3
+global same date id 80 progress 80
+RESULT: PASS

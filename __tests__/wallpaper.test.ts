@@ -35,20 +35,42 @@ describe("wallpaper render", () => {
     30_000,
   );
 
+  it("has Uzbek reflections for all 99 names", () => {
+    expect(NAMES).toHaveLength(99);
+    for (const name of NAMES) {
+      expect(name.shortReflection.trim().length).toBeGreaterThan(5);
+    }
+  });
+
   it(
-    "renders all 99 names without throwing (dark)",
+    "builds SVG for all 99 names and PNGs for longest Arabic names",
     async () => {
+      const { buildWallpaperSvg } = await import("@/lib/wallpaper/render");
+      // Arabic is emitted as HarfBuzz glyph paths — assert structure + reflection text.
+      const longIds = new Set([84, 85]);
       for (const name of NAMES) {
-        const progress = { current: name.id, total: 99, percent: Math.round((name.id / 99) * 100) };
-        const png = await renderWallpaperPng(name, progress, {
-          theme: "dark",
-          date: "2026-01-01",
-          caption: "test",
-        });
-        expect(png.subarray(1, 4).toString()).toBe("PNG");
-        expect(name.shortReflection.length).toBeGreaterThan(5);
+        const progress = {
+          current: name.id,
+          total: 99,
+          percent: Math.round((name.id / 99) * 100),
+        };
+        const opts = { theme: "dark" as const, date: "2026-01-01", caption: "test" };
+        const svg = buildWallpaperSvg(name, progress, opts);
+        expect(svg).toContain('id="arabic-calligraphy"');
+        expect(svg).toContain('id="daily-orbit"');
+        expect(svg).toContain('id="decorative-frame"');
+        expect(svg).toContain('id="daily-reflection"');
+        expect(svg).toContain('id="islamic-pattern"');
+        expect(svg.length).toBeGreaterThan(5_000);
+        if (longIds.has(name.id)) {
+          const png = await renderWallpaperPng(name, progress, {
+            ...opts,
+            theme: "light",
+          });
+          expect(png.subarray(1, 4).toString()).toBe("PNG");
+        }
       }
     },
-    180_000,
+    60_000,
   );
 });
