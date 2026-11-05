@@ -19,9 +19,9 @@
     {
       "ActionIndex": 0,
       "Category": "Parameter",
-      "DefaultValue": "https://asma-daily-wallpaper.netlify.app/api/wallpaper",
+      "DefaultValue": "https://asma-daily-wallpaper.netlify.app/api/wallpaper?start=2026-11-05",
       "ParameterKey": "WFURL",
-      "Text": "Wallpaper API URL"
+      "Text": "Personal wallpaper URL (keep ?start=install-day so you begin at name 1)"
     }
   ],
   "WFWorkflowActions": [
@@ -31,7 +31,7 @@
         "UUID": "A1111111-1111-4111-8111-111111111111",
         "CustomOutputName": "ASMA Wallpaper",
         "WFHTTPMethod": "GET",
-        "WFURL": "https://asma-daily-wallpaper.netlify.app/api/wallpaper"
+        "WFURL": "https://asma-daily-wallpaper.netlify.app/api/wallpaper?start=2026-11-05"
       }
     },
     {

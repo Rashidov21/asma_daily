@@ -1,0 +1,46 @@
+
+> asma_daily@0.1.0 build
+> next build
+
+   ▲ Next.js 15.5.29
+   - Environments: .env.local
+
+   Creating an optimized production build ...
+ ✓ Compiled successfully in 14.1s
+   Linting and checking validity of types ...
+   Collecting page data ...
+   Generating static pages (0/108) ...
+   Generating static pages (27/108) 
+   Generating static pages (54/108) 
+   Generating static pages (81/108) 
+ ✓ Generating static pages (108/108)
+   Finalizing page optimization ...
+   Collecting build traces ...
+
+Route (app)                                 Size  First Load JS
+┌ ƒ /                                    64.3 kB         170 kB
+├ ○ /_not-found                            995 B         104 kB
+├ ○ /about                                 169 B         106 kB
+├ ƒ /api/daily                             135 B         103 kB
+├ ƒ /api/names                             135 B         103 kB
+├ ƒ /api/names/[id]                        135 B         103 kB
+├ ƒ /api/shortcut                          135 B         103 kB
+├ ƒ /api/wallpaper                         135 B         103 kB
+├ ○ /names                                 169 B         106 kB
+├ ● /names/[slug]                          169 B         106 kB
+├   ├ /names/ar-rahman
+├   ├ /names/ar-rahim
+├   ├ /names/al-malik
+├   └ [+96 more paths]
+├ ƒ /setup                               2.09 kB         108 kB
+└ ƒ /wallpaper                             169 B         106 kB
++ First Load JS shared by all             103 kB
+  ├ chunks/255-73938ce8a8eac1ad.js       46.6 kB
+  ├ chunks/4bd1b696-c023c6e3521b1417.js  54.2 kB
+  └ other shared chunks (total)          1.93 kB
+
+
+○  (Static)   prerendered as static content
+●  (SSG)      prerendered as static HTML (uses generateStaticParams)
+ƒ  (Dynamic)  server-rendered on demand
+

@@ -52,10 +52,31 @@ function resolveDateString(date?: Date | string): string {
   return getTashkentDateString(date ?? new Date());
 }
 
+export type DailyResolveOptions = {
+  /**
+   * Personal journey start (YYYY-MM-DD). Day 0 = name 1, then +1 each day.
+   * When omitted, uses the shared `DAILY_ANCHOR_DATE` calendar cycle.
+   */
+  start?: string;
+};
+
+/** Resolve the cycle anchor: personal `start` or global env anchor. */
+export function resolveCycleAnchor(start?: string): string {
+  if (!start) return getAnchorDate();
+  const normalized = normalizeCalendarDateString(start);
+  if (!normalized) {
+    throw new Error(`Invalid start date: ${start}`);
+  }
+  return normalized;
+}
+
 /** 0-based index into the 99 names for a Tashkent calendar day. */
-export function getDailyNameIndex(date?: Date | string): number {
+export function getDailyNameIndex(
+  date?: Date | string,
+  options?: DailyResolveOptions,
+): number {
   const dateStr = resolveDateString(date);
-  const anchor = getAnchorDate();
+  const anchor = resolveCycleAnchor(options?.start);
   const day = tashkentDayStartUtc(dateStr);
   const anchorDay = tashkentDayStartUtc(anchor);
   if (!day || !anchorDay) {
@@ -65,21 +86,30 @@ export function getDailyNameIndex(date?: Date | string): number {
   return ((diff % TOTAL_NAMES) + TOTAL_NAMES) % TOTAL_NAMES;
 }
 
-export function getDailyName(date?: Date | string): DivineName {
-  return getNameByIndex(getDailyNameIndex(date));
+export function getDailyName(
+  date?: Date | string,
+  options?: DailyResolveOptions,
+): DivineName {
+  return getNameByIndex(getDailyNameIndex(date, options));
 }
 
-export function getDailyProgress(date?: Date | string): DailyProgress {
-  const index = getDailyNameIndex(date);
+export function getDailyProgress(
+  date?: Date | string,
+  options?: DailyResolveOptions,
+): DailyProgress {
+  const index = getDailyNameIndex(date, options);
   const current = index + 1;
   const percent = Math.round((current / TOTAL_NAMES) * 100);
   return { current, total: TOTAL_NAMES, percent };
 }
 
-export function getDailyPayload(date?: Date | string): DailyPayload {
+export function getDailyPayload(
+  date?: Date | string,
+  options?: DailyResolveOptions,
+): DailyPayload {
   const dateStr = resolveDateString(date);
-  const name = getDailyName(dateStr);
-  const progress = getDailyProgress(dateStr);
+  const name = getDailyName(dateStr, options);
+  const progress = getDailyProgress(dateStr, options);
   const nextHoliday = getNextIslamicHoliday(dateStr);
   const when = formatDaysUntilRu(nextHoliday.daysUntil);
   const nextHolidayLabel = nextHoliday.isToday

@@ -37,12 +37,16 @@ Open [http://localhost:3000](http://localhost:3000).
 
 | Endpoint | Response |
 |----------|----------|
-| `GET /api/daily` | Today's name JSON |
+| `GET /api/daily` | Today's name JSON (shared calendar cycle) |
 | `GET /api/daily?date=YYYY-MM-DD` | Name for date |
-| `GET /api/wallpaper` | Today's PNG |
+| `GET /api/daily?start=YYYY-MM-DD` | Personal cycle: install day = name 1, then +1/day |
+| `GET /api/wallpaper` | Today's PNG (shared cycle) |
 | `GET /api/wallpaper?date=YYYY-MM-DD` | PNG for date |
+| `GET /api/wallpaper?start=YYYY-MM-DD` | Personal PNG journey from name 1 |
 | `GET /api/names` | All 99 names |
 | `GET /api/names/[id]` | Single name (`1`–`99`) |
+
+**Shortcut install:** `/setup` and the install button copy a URL with `?start=<today>` so a new user begins at name 1. Keep that `start` param forever in the Shortcut.
 
 Verify PNG locally:
 

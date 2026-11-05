@@ -1,0 +1,14 @@
+
+ RUN  v3.2.7 /Users/mac/Documents/GitHub/asma_daily
+
+ ✓ __tests__/islamic-holidays.test.ts (4 tests) 20ms
+ ✓ __tests__/daily-name.test.ts (11 tests) 31ms
+ ✓ __tests__/wallpaper.test.ts (2 tests) 5738ms
+   ✓ wallpaper render > renders a 1179x2556 dark PNG  3808ms
+   ✓ wallpaper render > renders a 1179x2556 light PNG  1922ms
+
+ Test Files  3 passed (3)
+      Tests  17 passed (17)
+   Start at  09:26:18
+   Duration  9.88s (transform 520ms, setup 0ms, collect 9.33s, tests 5.79s, environment 1ms, prepare 577ms)
+

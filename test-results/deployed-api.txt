@@ -1,0 +1,144 @@
+[wallpaper undated]
+  url: https://asma-daily-wallpaper.netlify.app/api/wallpaper
+  http: 200
+  content-type: image/png
+  bytes: 345266
+  magic/hex8: 89504e470d0a1a0a
+  file: PNG image data, 1179 x 2556, 8-bit/color RGBA, non-interlaced
+
+[wallpaper dated]
+  url: https://asma-daily-wallpaper.netlify.app/api/wallpaper?date=2026-11-07
+  http: 200
+  content-type: image/png
+  bytes: 333341
+  magic/hex8: 89504e470d0a1a0a
+  file: PNG image data, 1179 x 2556, 8-bit/color RGBA, non-interlaced
+
+[wallpaper start day0]
+  url: https://asma-daily-wallpaper.netlify.app/api/wallpaper?start=2026-11-05&date=2026-11-05
+  http: 200
+  content-type: image/png
+  bytes: 345266
+  magic/hex8: 89504e470d0a1a0a
+  file: PNG image data, 1179 x 2556, 8-bit/color RGBA, non-interlaced
+
+[wallpaper start day2]
+  url: https://asma-daily-wallpaper.netlify.app/api/wallpaper?start=2026-11-05&date=2026-11-07
+  http: 200
+  content-type: image/png
+  bytes: 333341
+  magic/hex8: 89504e470d0a1a0a
+  file: PNG image data, 1179 x 2556, 8-bit/color RGBA, non-interlaced
+
+[wallpaper theme light]
+  url: https://asma-daily-wallpaper.netlify.app/api/wallpaper?theme=light&date=2026-11-07
+  http: 200
+  content-type: image/png
+  bytes: 333341
+  magic/hex8: 89504e470d0a1a0a
+  file: PNG image data, 1179 x 2556, 8-bit/color RGBA, non-interlaced
+
+[wallpaper bad date]
+  url: https://asma-daily-wallpaper.netlify.app/api/wallpaper?date=not-a-date
+  http: 400
+  content-type: application/json
+  bytes: 41
+  magic/hex8: 7b226572726f7222
+  body: {"error":"Invalid date. Use YYYY-MM-DD."}
+
+[wallpaper bad start]
+  url: https://asma-daily-wallpaper.netlify.app/api/wallpaper?start=bad
+  http: 200
+  content-type: image/png
+  bytes: 345266
+  magic/hex8: 89504e470d0a1a0a
+  file: PNG image data, 1179 x 2556, 8-bit/color RGBA, non-interlaced
+
+[daily undated]
+  url: https://asma-daily-wallpaper.netlify.app/api/daily
+  http: 200
+  content-type: application/json
+  bytes: 816
+  magic/hex8: 7b2264617465223a
+  body: {"date":"2026-11-05","timezone":"Asia/Tashkent","index":79,"progress":{"current":80,"total":99,"percent":81},"name":{"id":80,"arabic":"ٱلتَّوَّابُ","transliteration":"At-Tawwāb","russianName":"Ат-Тавваб","russianMeaning"
+
+[daily start day0]
+  url: https://asma-daily-wallpaper.netlify.app/api/daily?start=2026-11-05&date=2026-11-05
+  http: 200
+  content-type: application/json
+  bytes: 816
+  magic/hex8: 7b2264617465223a
+  body: {"date":"2026-11-05","timezone":"Asia/Tashkent","index":79,"progress":{"current":80,"total":99,"percent":81},"name":{"id":80,"arabic":"ٱلتَّوَّابُ","transliteration":"At-Tawwāb","russianName":"Ат-Тавваб","russianMeaning"
+
+[daily start day2]
+  url: https://asma-daily-wallpaper.netlify.app/api/daily?start=2026-11-05&date=2026-11-07
+  http: 200
+  content-type: application/json
+  bytes: 801
+  magic/hex8: 7b2264617465223a
+  body: {"date":"2026-11-07","timezone":"Asia/Tashkent","index":81,"progress":{"current":82,"total":99,"percent":83},"name":{"id":82,"arabic":"ٱلْعَفُوُّ","transliteration":"Al-Afuww","russianName":"Аль-Афувв","russianMeaning":"П
+
+[names list]
+  url: https://asma-daily-wallpaper.netlify.app/api/names
+  http: 200
+  content-type: application/json
+  bytes: 18862
+  magic/hex8: 7b22746f74616c22
+  body: {"total":99,"names":[{"id":1,"arabic":"ٱلرَّحْمَٰنُ","transliteration":"Ar-Rahmān","russianName":"Ар-Рахман","russianMeaning":"Милостивый","shortReflection":"","slug":"ar-rahman"},{"id":2,"arabic":"ٱلرَّ�
+
+[names id1]
+  url: https://asma-daily-wallpaper.netlify.app/api/names/1
+  http: 200
+  content-type: application/json
+  bytes: 189
+  magic/hex8: 7b226964223a312c
+  body: {"id":1,"arabic":"ٱلرَّحْمَٰنُ","transliteration":"Ar-Rahmān","russianName":"Ар-Рахман","russianMeaning":"Милостивый","shortReflection":"","slug":"ar-rahman"}
+
+[wrong host wallpaper]
+  url: https://asma-daily.netlify.app/api/wallpaper?date=2026-11-07
+  http: 200
+  content-type: text/html;
+  bytes: 1956
+  magic/hex8: 3c21444f43545950
+  body: <!DOCTYPE html> <html lang="en"> <head> 	<meta charset="UTF-8"/> <!-- This site 
+
+[pages home]
+  url: https://asma-daily-wallpaper.netlify.app/
+  http: 200
+  content-type: text/html;
+  bytes: 84876
+  magic/hex8: 3c21444f43545950
+  body: <!DOCTYPE html><html lang="ru"><head><meta charSet="utf-8"/> <!-- This site is h
+
+[pages setup]
+  url: https://asma-daily-wallpaper.netlify.app/setup
+  http: 200
+  content-type: text/html;
+  bytes: 21009
+  magic/hex8: 3c21444f43545950
+  body: <!DOCTYPE html><html lang="ru"><head><meta charSet="utf-8"/> <!-- This site is h
+
+[pages wallpaper]
+  url: https://asma-daily-wallpaper.netlify.app/wallpaper
+  http: 200
+  content-type: text/html;
+  bytes: 13866
+  magic/hex8: 3c21444f43545950
+  body: <!DOCTYPE html><html lang="ru"><head><meta charSet="utf-8"/> <!-- This site is h
+
+[pages names]
+  url: https://asma-daily-wallpaper.netlify.app/names
+  http: 200
+  content-type: text/html;
+  bytes: 146985
+  magic/hex8: 3c21444f43545950
+  body: <!DOCTYPE html><!--uEig5IfhMY9fJHNuejMeb--><html lang="ru"><head><meta charSet="
+
+[pages about]
+  url: https://asma-daily-wallpaper.netlify.app/about
+  http: 200
+  content-type: text/html;
+  bytes: 15368
+  magic/hex8: 3c21444f43545950
+  body: <!DOCTYPE html><!--uEig5IfhMY9fJHNuejMeb--><html lang="ru"><head><meta charSet="
+

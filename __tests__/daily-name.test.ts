@@ -75,4 +75,29 @@ describe("daily-name rotation", () => {
     expect(getDailyNameIndex(justAfter)).toBe(getDailyNameIndex("2025-03-10"));
     expect(getDailyNameIndex(justBefore)).not.toBe(getDailyNameIndex(justAfter));
   });
+
+  it("personal start: install day is name 1, next day name 2", () => {
+    const start = "2026-11-05";
+    expect(getDailyNameIndex(start, { start })).toBe(0);
+    expect(getDailyName(start, { start }).id).toBe(1);
+    expect(getDailyProgress(start, { start }).current).toBe(1);
+
+    expect(getDailyNameIndex("2026-11-06", { start })).toBe(1);
+    expect(getDailyName("2026-11-06", { start }).id).toBe(2);
+    expect(getDailyProgress("2026-11-07", { start }).current).toBe(3);
+  });
+
+  it("personal start wraps after 99 days", () => {
+    const start = "2026-01-01";
+    // day 0 → name 1; day 99 → wraps to name 1
+    expect(getDailyNameIndex("2026-04-10", { start })).toBe(0);
+    expect(getDailyName("2026-04-10", { start }).id).toBe(1);
+  });
+
+  it("personal start is independent of global DAILY_ANCHOR_DATE", () => {
+    process.env.DAILY_ANCHOR_DATE = "2025-01-01";
+    // Global cycle on 2026-11-05 is far from name 1
+    expect(getDailyNameIndex("2026-11-05")).not.toBe(0);
+    expect(getDailyNameIndex("2026-11-05", { start: "2026-11-05" })).toBe(0);
+  });
 });

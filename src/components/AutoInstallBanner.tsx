@@ -26,9 +26,10 @@ export function AutoInstallBanner({ wallpaperUrl }: { wallpaperUrl: string }) {
     <div className="mt-6 rounded-2xl border border-[var(--gold)]/35 bg-[var(--gold)]/10 px-4 py-3 text-sm text-[var(--text)]">
       {status === "copied" && (
         <p>
-          URL API обоев скопирован. Shortcuts → новый Shortcut → вставьте в{" "}
-          <em>Get Contents of URL</em>, затем добавьте{" "}
-          <em>Set Wallpaper</em> (Lock Screen).
+          Личный URL (с <code>start=</code> → с 1-го имени) скопирован.
+          Shortcuts → вставьте в <em>Get Contents of URL</em>, затем{" "}
+          <em>Set Wallpaper</em> (Lock Screen). Параметр{" "}
+          <code>start</code> не удаляйте.
         </p>
       )}
       {status === "pending" && <p>Копируем API URL…</p>}

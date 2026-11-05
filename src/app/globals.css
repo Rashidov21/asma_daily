@@ -270,9 +270,9 @@ a {
 /* ---------- iPhone-like sky atmosphere ---------- */
 .sky-root[data-period="day"] .sky-gradient {
   background:
-    radial-gradient(ellipse 120% 80% at 50% -10%, #d8e7f8 0%, transparent 55%),
-    radial-gradient(ellipse 90% 60% at 80% 40%, rgba(255, 236, 210, 0.55) 0%, transparent 50%),
-    linear-gradient(180deg, #9ec0e8 0%, #c5d8ef 38%, #e8e0f0 72%, #d4c4e8 100%);
+    radial-gradient(ellipse 120% 70% at 50% -5%, #ffffff 0%, transparent 55%),
+    radial-gradient(ellipse 90% 55% at 78% 35%, rgba(255, 244, 220, 0.65) 0%, transparent 50%),
+    linear-gradient(180deg, #f8f6f2 0%, #ffffff 42%, #f3efe8 78%, #ebe4f2 100%);
 }
 
 .sky-root[data-period="dawn"] .sky-gradient {

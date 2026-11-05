@@ -6,6 +6,7 @@ export const dynamic = "force-dynamic";
 
 export async function GET(request: NextRequest) {
   const dateParam = request.nextUrl.searchParams.get("date");
+  const startParam = request.nextUrl.searchParams.get("start");
 
   if (dateParam && !isValidDateParam(dateParam)) {
     return NextResponse.json(
@@ -14,15 +15,23 @@ export async function GET(request: NextRequest) {
     );
   }
 
+  if (startParam && !isValidDateParam(startParam)) {
+    return NextResponse.json(
+      { error: "Invalid start. Use YYYY-MM-DD (install day → name 1)." },
+      { status: 400 },
+    );
+  }
+
   try {
-    const payload = getDailyPayload(dateParam ?? undefined);
+    const payload = getDailyPayload(dateParam ?? undefined, {
+      start: startParam ?? undefined,
+    });
     return NextResponse.json(payload, {
       headers: {
         "Cache-Control": dateParam
           ? "public, max-age=86400, immutable"
           : "public, s-maxage=300, stale-while-revalidate=60",
-        // Netlify ignores query strings in cache keys unless Netlify-Vary lists them.
-        "Netlify-Vary": "query=date",
+        "Netlify-Vary": "query=date,start",
       },
     });
   } catch (error) {

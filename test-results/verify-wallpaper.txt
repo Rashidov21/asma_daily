@@ -1,0 +1,6 @@
+OK    https://asma-daily-wallpaper.netlify.app/api/wallpaper  1179x2556  345266B  dark≈96%
+OK    https://asma-daily-wallpaper.netlify.app/api/wallpaper?date=2026-11-07  1179x2556  333341B  dark≈96%
+FAIL  https://asma-daily.netlify.app/api/wallpaper
+  Content-Type is "text/html; charset=UTF-8" (expected image/png). Body starts with: <!DOCTYPE html> <html lang="en"> <head> <meta charset="UTF-. Wrong host? Use https://asma-daily-wallpaper.netlify.app/api/wallpaper
+
+Apple Shortcuts Quick Look shows a white screen when the URL returns HTML, not PNG.

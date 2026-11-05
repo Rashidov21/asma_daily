@@ -6,8 +6,8 @@ import { AutoInstallBanner } from "@/components/AutoInstallBanner";
 import {
   SHORTCUT_ACTIONS,
   WALLPAPER_FIX_STEPS,
+  getPersonalWallpaperApiUrl,
   getShortcutInstallUrl,
-  getWallpaperApiUrl,
 } from "@/lib/shortcut";
 
 export const metadata: Metadata = {
@@ -23,7 +23,7 @@ export default async function SetupPage({
   searchParams: SearchParams;
 }) {
   const params = await searchParams;
-  const apiUrl = getWallpaperApiUrl();
+  const apiUrl = getPersonalWallpaperApiUrl();
   const installUrl = getShortcutInstallUrl();
   const hasInstallLink = Boolean(installUrl);
   const autoInstall =
@@ -47,6 +47,13 @@ export default async function SetupPage({
         Сайт сам не меняет обои. Нужен Shortcut: скачать PNG и поставить на
         Lock Screen. Кнопка открывает iCloud — нажмите{" "}
         <strong className="text-[var(--text)]">Add Shortcut</strong>.
+      </p>
+      <p className="mt-3 rounded-2xl border border-[var(--gold)]/30 bg-[var(--gold)]/10 px-3 py-3 text-sm leading-relaxed text-[var(--text)]">
+        Ваш личный URL содержит{" "}
+        <code className="text-[var(--gold)]">start=</code> — дата установки.
+        В этот день будет <strong>1-е имя</strong>, каждый следующий день —
+        следующее. Не удаляйте параметр{" "}
+        <code className="text-[var(--gold)]">start</code> из Shortcut.
       </p>
 
       {autoInstall && <AutoInstallBanner wallpaperUrl={overrideUrl} />}

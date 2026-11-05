@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { getSkyPeriod, type SkyPeriod } from "@/lib/sky-period";
+import { getAppearancePeriod, type SkyPeriod } from "@/lib/sky-period";
 
 function SoftCloud({
   className,
@@ -87,11 +87,18 @@ export function SkyAtmosphere() {
   const [ready, setReady] = useState(false);
 
   useEffect(() => {
-    const tick = () => setPeriod(getSkyPeriod());
-    tick();
+    const media = window.matchMedia("(prefers-color-scheme: light)");
+    const apply = () => {
+      setPeriod(getAppearancePeriod(media.matches ? "light" : "dark"));
+    };
+    apply();
     setReady(true);
-    const id = window.setInterval(tick, 60_000);
-    return () => window.clearInterval(id);
+    media.addEventListener("change", apply);
+    const id = window.setInterval(apply, 60_000);
+    return () => {
+      media.removeEventListener("change", apply);
+      window.clearInterval(id);
+    };
   }, []);
 
   const showClouds = period === "day" || period === "dawn" || period === "dusk";

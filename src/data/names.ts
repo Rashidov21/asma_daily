@@ -20,7 +20,7 @@ export const NAMES: DivineName[] = [
     transliteration: "Ar-Rahmān",
     russianName: "Ар-Рахман",
     russianMeaning: "Милостивый",
-    shortReflection: "",
+    shortReflection: "Mehr bilan yashashni unutma.",
     slug: "ar-rahman",
   },
   {
@@ -29,7 +29,7 @@ export const NAMES: DivineName[] = [
     transliteration: "Ar-Rahīm",
     russianName: "Ар-Рахим",
     russianMeaning: "Милосердный",
-    shortReflection: "",
+    shortReflection: "Yumshoq qalb bilan yur.",
     slug: "ar-rahim",
   },
   {
@@ -38,7 +38,7 @@ export const NAMES: DivineName[] = [
     transliteration: "Al-Malik",
     russianName: "Аль-Малик",
     russianMeaning: "Властелин",
-    shortReflection: "",
+    shortReflection: "Haqiqiy hukmni qalbda asra.",
     slug: "al-malik",
   },
   {
@@ -47,7 +47,7 @@ export const NAMES: DivineName[] = [
     transliteration: "Al-Quddūs",
     russianName: "Аль-Куддус",
     russianMeaning: "Святой",
-    shortReflection: "",
+    shortReflection: "Poklikni kundalik amalda saqla.",
     slug: "al-quddus",
   },
   {
@@ -56,7 +56,7 @@ export const NAMES: DivineName[] = [
     transliteration: "As-Salām",
     russianName: "Ас-Салям",
     russianMeaning: "Дарующий мир",
-    shortReflection: "",
+    shortReflection: "Tinchlikni avvalo o‘zingda top.",
     slug: "as-salam",
   },
   {
@@ -65,7 +65,7 @@ export const NAMES: DivineName[] = [
     transliteration: "Al-Mu’min",
     russianName: "Аль-Мумин",
     russianMeaning: "Дарующий веру",
-    shortReflection: "",
+    shortReflection: "Ishonch va xotirjamlikni asra.",
     slug: "al-mumin",
   },
   {
@@ -74,7 +74,7 @@ export const NAMES: DivineName[] = [
     transliteration: "Al-Muhaymin",
     russianName: "Аль-Мухаймин",
     russianMeaning: "Хранитель",
-    shortReflection: "",
+    shortReflection: "Himoyani yaxshi niyatda izla.",
     slug: "al-muhaymin",
   },
   {
@@ -83,7 +83,7 @@ export const NAMES: DivineName[] = [
     transliteration: "Al-Azīz",
     russianName: "Аль-Азиз",
     russianMeaning: "Могущественный",
-    shortReflection: "",
+    shortReflection: "Kuchni yaxshilik uchun ishlat.",
     slug: "al-aziz",
   },
   {
@@ -92,7 +92,7 @@ export const NAMES: DivineName[] = [
     transliteration: "Al-Jabbār",
     russianName: "Аль-Джаббар",
     russianMeaning: "Подчиняющий",
-    shortReflection: "",
+    shortReflection: "Yuragingni to‘g‘ri yo‘lda tut.",
     slug: "al-jabbar",
   },
   {
@@ -101,7 +101,7 @@ export const NAMES: DivineName[] = [
     transliteration: "Al-Mutakabbir",
     russianName: "Аль-Мутакаббир",
     russianMeaning: "Превосходящий",
-    shortReflection: "",
+    shortReflection: "Takabburlikdan uzoq tur.",
     slug: "al-mutakabbir",
   },
   {
@@ -110,7 +110,7 @@ export const NAMES: DivineName[] = [
     transliteration: "Al-Khāliq",
     russianName: "Аль-Халик",
     russianMeaning: "Творец",
-    shortReflection: "",
+    shortReflection: "Yaratilgan go‘zallikni qadrala.",
     slug: "al-khaliq",
   },
   {
@@ -119,7 +119,7 @@ export const NAMES: DivineName[] = [
     transliteration: "Al-Bāri’",
     russianName: "Аль-Бари",
     russianMeaning: "Создатель",
-    shortReflection: "",
+    shortReflection: "Har yangi kun — yangi imkon.",
     slug: "al-bari",
   },
   {
@@ -128,7 +128,7 @@ export const NAMES: DivineName[] = [
     transliteration: "Al-Musawwir",
     russianName: "Аль-Мусаввир",
     russianMeaning: "Дарующий облик",
-    shortReflection: "",
+    shortReflection: "O‘z qiyofangni go‘zal tut.",
     slug: "al-musawwir",
   },
   {
@@ -137,7 +137,7 @@ export const NAMES: DivineName[] = [
     transliteration: "Al-Ghaffār",
     russianName: "Аль-Гаффар",
     russianMeaning: "Скрывающий грехи",
-    shortReflection: "",
+    shortReflection: "Kechirim so‘rashni unutma.",
     slug: "al-ghaffar",
   },
   {
@@ -146,7 +146,7 @@ export const NAMES: DivineName[] = [
     transliteration: "Al-Qahhār",
     russianName: "Аль-Каххар",
     russianMeaning: "Господствующий",
-    shortReflection: "",
+    shortReflection: "Nafsni nazorat qilishni o‘rgan.",
     slug: "al-qahhar",
   },
   {
@@ -155,7 +155,7 @@ export const NAMES: DivineName[] = [
     transliteration: "Al-Wahhāb",
     russianName: "Аль-Ваххаб",
     russianMeaning: "Дарующий",
-    shortReflection: "",
+    shortReflection: "Berishni qalb bilan qil.",
     slug: "al-wahhab",
   },
   {
@@ -164,7 +164,7 @@ export const NAMES: DivineName[] = [
     transliteration: "Ar-Razzāq",
     russianName: "Ар-Раззак",
     russianMeaning: "Наделяющий",
-    shortReflection: "",
+    shortReflection: "Rizqni shukronalik bilan qabul qil.",
     slug: "ar-razzaq",
   },
   {
@@ -173,7 +173,7 @@ export const NAMES: DivineName[] = [
     transliteration: "Al-Fattāh",
     russianName: "Аль-Фаттах",
     russianMeaning: "Раскрывающий",
-    shortReflection: "",
+    shortReflection: "Yopiq eshiklar orqasida umid bor.",
     slug: "al-fattah",
   },
   {
@@ -182,7 +182,7 @@ export const NAMES: DivineName[] = [
     transliteration: "Al-Alīm",
     russianName: "Аль-Алим",
     russianMeaning: "Всезнающий",
-    shortReflection: "",
+    shortReflection: "Bilimni yaxshilikka aylantir.",
     slug: "al-alim",
   },
   {
@@ -191,7 +191,7 @@ export const NAMES: DivineName[] = [
     transliteration: "Al-Qābid",
     russianName: "Аль-Кабид",
     russianMeaning: "Уменьшающий блага",
-    shortReflection: "",
+    shortReflection: "Cheklovlarda sabrni top.",
     slug: "al-qabid",
   },
   {
@@ -200,7 +200,7 @@ export const NAMES: DivineName[] = [
     transliteration: "Al-Bāsit",
     russianName: "Аль-Басит",
     russianMeaning: "Увеличивающий",
-    shortReflection: "",
+    shortReflection: "Kenglikni qalbda saqla.",
     slug: "al-basit",
   },
   {
@@ -209,7 +209,7 @@ export const NAMES: DivineName[] = [
     transliteration: "Al-Khāfid",
     russianName: "Аль-Хафид",
     russianMeaning: "Принижающий",
-    shortReflection: "",
+    shortReflection: "Kamtarlikni sharaf deb bil.",
     slug: "al-khafid",
   },
   {
@@ -218,7 +218,7 @@ export const NAMES: DivineName[] = [
     transliteration: "Ar-Rāfi’",
     russianName: "Ар-Рафи",
     russianMeaning: "Возвышающий",
-    shortReflection: "",
+    shortReflection: "Yaxshi niyat seni ko‘taradi.",
     slug: "ar-rafi",
   },
   {
@@ -227,7 +227,7 @@ export const NAMES: DivineName[] = [
     transliteration: "Al-Mu’izz",
     russianName: "Аль-Муизз",
     russianMeaning: "Возвеличивающий",
-    shortReflection: "",
+    shortReflection: "Izratni yaxshi amalda izla.",
     slug: "al-muizz",
   },
   {
@@ -236,7 +236,7 @@ export const NAMES: DivineName[] = [
     transliteration: "Al-Mudhill",
     russianName: "Аль-Музилль",
     russianMeaning: "Ослабляющий",
-    shortReflection: "",
+    shortReflection: "G‘ururni yerga qo‘y.",
     slug: "al-mudhill",
   },
   {
@@ -245,7 +245,7 @@ export const NAMES: DivineName[] = [
     transliteration: "As-Samī’",
     russianName: "Ас-Сами",
     russianMeaning: "Всеслышащий",
-    shortReflection: "",
+    shortReflection: "Eshitishni tinglash bilan boyit.",
     slug: "as-sami",
   },
   {
@@ -254,7 +254,7 @@ export const NAMES: DivineName[] = [
     transliteration: "Al-Basīr",
     russianName: "Аль-Басыр",
     russianMeaning: "Всевидящий",
-    shortReflection: "",
+    shortReflection: "Ko‘rganlaringdan ibrat ol.",
     slug: "al-basir",
   },
   {
@@ -263,7 +263,7 @@ export const NAMES: DivineName[] = [
     transliteration: "Al-Hakam",
     russianName: "Аль-Хакам",
     russianMeaning: "Судья",
-    shortReflection: "",
+    shortReflection: "Adolatli qaror qabul qil.",
     slug: "al-hakam",
   },
   {
@@ -272,7 +272,7 @@ export const NAMES: DivineName[] = [
     transliteration: "Al-Adl",
     russianName: "Аль-Адль",
     russianMeaning: "Справедливый",
-    shortReflection: "",
+    shortReflection: "Adolatni hayotingda ham asra.",
     slug: "al-adl",
   },
   {
@@ -281,7 +281,7 @@ export const NAMES: DivineName[] = [
     transliteration: "Al-Latīf",
     russianName: "Аль-Латиф",
     russianMeaning: "Понимающий",
-    shortReflection: "",
+    shortReflection: "Noziklikni muloqotda saqla.",
     slug: "al-latif",
   },
   {
@@ -290,7 +290,7 @@ export const NAMES: DivineName[] = [
     transliteration: "Al-Khabīr",
     russianName: "Аль-Хабир",
     russianMeaning: "Сведущий",
-    shortReflection: "",
+    shortReflection: "Bilganing bilan faxrlanma — amal qil.",
     slug: "al-khabir",
   },
   {
@@ -299,7 +299,7 @@ export const NAMES: DivineName[] = [
     transliteration: "Al-Halīm",
     russianName: "Аль-Халим",
     russianMeaning: "Сдержанный",
-    shortReflection: "",
+    shortReflection: "Sabr — eng go‘zal javob.",
     slug: "al-halim",
   },
   {
@@ -308,7 +308,7 @@ export const NAMES: DivineName[] = [
     transliteration: "Al-Azīm",
     russianName: "Аль-Азым",
     russianMeaning: "Величайший",
-    shortReflection: "",
+    shortReflection: "Buyuklikni kamtarlikda izla.",
     slug: "al-azim",
   },
   {
@@ -317,7 +317,7 @@ export const NAMES: DivineName[] = [
     transliteration: "Al-Ghafūr",
     russianName: "Аль-Гафур",
     russianMeaning: "Прощающий",
-    shortReflection: "",
+    shortReflection: "Kechirim — qalbni yengillashtiradi.",
     slug: "al-ghafur",
   },
   {
@@ -326,7 +326,7 @@ export const NAMES: DivineName[] = [
     transliteration: "Ash-Shakūr",
     russianName: "Аш-Шакур",
     russianMeaning: "Вознаграждающий",
-    shortReflection: "",
+    shortReflection: "Shukronalikni unutma.",
     slug: "ash-shakur",
   },
   {
@@ -335,7 +335,7 @@ export const NAMES: DivineName[] = [
     transliteration: "Al-Aliyy",
     russianName: "Аль-Алий",
     russianMeaning: "Всевышний",
-    shortReflection: "",
+    shortReflection: "Yuksak niyatni past tutma.",
     slug: "al-aliyy",
   },
   {
@@ -344,7 +344,7 @@ export const NAMES: DivineName[] = [
     transliteration: "Al-Kabīr",
     russianName: "Аль-Кабир",
     russianMeaning: "Великий",
-    shortReflection: "",
+    shortReflection: "Katta narsani kichik yurakda saqlama.",
     slug: "al-kabir",
   },
   {
@@ -353,7 +353,7 @@ export const NAMES: DivineName[] = [
     transliteration: "Al-Hafīz",
     russianName: "Аль-Хафиз",
     russianMeaning: "Хранитель",
-    shortReflection: "",
+    shortReflection: "Qalbingni ehtiyot qil.",
     slug: "al-hafiz",
   },
   {
@@ -362,7 +362,7 @@ export const NAMES: DivineName[] = [
     transliteration: "Al-Muqīt",
     russianName: "Аль-Мукит",
     russianMeaning: "Поддерживающий",
-    shortReflection: "",
+    shortReflection: "Kuchni kunlik yaxshilikka sarfla.",
     slug: "al-muqit",
   },
   {
@@ -371,7 +371,7 @@ export const NAMES: DivineName[] = [
     transliteration: "Al-Hasīb",
     russianName: "Аль-Хасиб",
     russianMeaning: "Достаточный",
-    shortReflection: "",
+    shortReflection: "Yetarlilikni qadrla.",
     slug: "al-hasib",
   },
   {
@@ -380,7 +380,7 @@ export const NAMES: DivineName[] = [
     transliteration: "Al-Jalīl",
     russianName: "Аль-Джалиль",
     russianMeaning: "Обладающий величием",
-    shortReflection: "",
+    shortReflection: "Hurmatni so‘zda ham saqla.",
     slug: "al-jalil",
   },
   {
@@ -389,7 +389,7 @@ export const NAMES: DivineName[] = [
     transliteration: "Al-Karīm",
     russianName: "Аль-Карим",
     russianMeaning: "Щедрый",
-    shortReflection: "",
+    shortReflection: "Saxovatni kichik ishda ham ko‘rsat.",
     slug: "al-karim",
   },
   {
@@ -398,7 +398,7 @@ export const NAMES: DivineName[] = [
     transliteration: "Ar-Raqīb",
     russianName: "Ар-Ракиб",
     russianMeaning: "Наблюдающий",
-    shortReflection: "",
+    shortReflection: "Niyatlaringni kuzatib yur.",
     slug: "ar-raqib",
   },
   {
@@ -407,7 +407,7 @@ export const NAMES: DivineName[] = [
     transliteration: "Al-Mujīb",
     russianName: "Аль-Муджиб",
     russianMeaning: "Отзывчивый",
-    shortReflection: "",
+    shortReflection: "Iltimoini yaxshi niyat bilan ayt.",
     slug: "al-mujib",
   },
   {
@@ -416,7 +416,7 @@ export const NAMES: DivineName[] = [
     transliteration: "Al-Wāsi’",
     russianName: "Аль-Васи",
     russianMeaning: "Вездесущий",
-    shortReflection: "",
+    shortReflection: "Keng qalb bilan qarash.",
     slug: "al-wasi",
   },
   {
@@ -425,7 +425,7 @@ export const NAMES: DivineName[] = [
     transliteration: "Al-Hakīm",
     russianName: "Аль-Хаким",
     russianMeaning: "Мудрый",
-    shortReflection: "",
+    shortReflection: "Hikmatni shoshilmasdan izla.",
     slug: "al-hakim",
   },
   {
@@ -434,7 +434,7 @@ export const NAMES: DivineName[] = [
     transliteration: "Al-Wadūd",
     russianName: "Аль-Вадуд",
     russianMeaning: "Любящий",
-    shortReflection: "",
+    shortReflection: "Sevgini yumshoq so‘z bilan bildir.",
     slug: "al-wadud",
   },
   {
@@ -443,7 +443,7 @@ export const NAMES: DivineName[] = [
     transliteration: "Al-Majīd",
     russianName: "Аль-Маджид",
     russianMeaning: "Славный",
-    shortReflection: "",
+    shortReflection: "Yaxshi nomni amal bilan asra.",
     slug: "al-majid",
   },
   {
@@ -452,7 +452,7 @@ export const NAMES: DivineName[] = [
     transliteration: "Al-Bā’ith",
     russianName: "Аль-Баис",
     russianMeaning: "Воскрешающий",
-    shortReflection: "",
+    shortReflection: "Har tong — yangi boshlanish.",
     slug: "al-baith",
   },
   {
@@ -461,7 +461,7 @@ export const NAMES: DivineName[] = [
     transliteration: "Ash-Shahīd",
     russianName: "Аш-Шахид",
     russianMeaning: "Свидетель",
-    shortReflection: "",
+    shortReflection: "Haqiqatni ko‘zdan qochirma.",
     slug: "ash-shahid",
   },
   {
@@ -470,7 +470,7 @@ export const NAMES: DivineName[] = [
     transliteration: "Al-Haqq",
     russianName: "Аль-Хакк",
     russianMeaning: "Истинный",
-    shortReflection: "",
+    shortReflection: "Rostlikni tanla.",
     slug: "al-haqq",
   },
   {
@@ -479,7 +479,7 @@ export const NAMES: DivineName[] = [
     transliteration: "Al-Wakīl",
     russianName: "Аль-Вакиль",
     russianMeaning: "Опекающий",
-    shortReflection: "",
+    shortReflection: "Ishonchni ishonchli joyga qo‘y.",
     slug: "al-wakil",
   },
   {
@@ -488,7 +488,7 @@ export const NAMES: DivineName[] = [
     transliteration: "Al-Qawiyy",
     russianName: "Аль-Кавий",
     russianMeaning: "Сильный",
-    shortReflection: "",
+    shortReflection: "Kuchni tinchlik uchun ishlat.",
     slug: "al-qawiyy",
   },
   {
@@ -497,7 +497,7 @@ export const NAMES: DivineName[] = [
     transliteration: "Al-Matīn",
     russianName: "Аль-Матин",
     russianMeaning: "Непоколебимый",
-    shortReflection: "",
+    shortReflection: "Mustahkamlikni sabrda top.",
     slug: "al-matin",
   },
   {
@@ -506,7 +506,7 @@ export const NAMES: DivineName[] = [
     transliteration: "Al-Waliyy",
     russianName: "Аль-Вали",
     russianMeaning: "Спутник",
-    shortReflection: "",
+    shortReflection: "Do‘stlikni sadoqat bilan asra.",
     slug: "al-waliyy",
   },
   {
@@ -515,7 +515,7 @@ export const NAMES: DivineName[] = [
     transliteration: "Al-Hamīd",
     russianName: "Аль-Хамид",
     russianMeaning: "Достойный хвалы",
-    shortReflection: "",
+    shortReflection: "Maqtovni kamtarlik bilan qabul qil.",
     slug: "al-hamid",
   },
   {
@@ -524,7 +524,7 @@ export const NAMES: DivineName[] = [
     transliteration: "Al-Muhsī",
     russianName: "Аль-Мухси",
     russianMeaning: "Учитывающий",
-    shortReflection: "",
+    shortReflection: "Har amalingni hisobga ol.",
     slug: "al-muhsi",
   },
   {
@@ -533,7 +533,7 @@ export const NAMES: DivineName[] = [
     transliteration: "Al-Mubdi’",
     russianName: "Аль-Мубди",
     russianMeaning: "Основатель",
-    shortReflection: "",
+    shortReflection: "Yaxshi ishni birinchi qadamdan boshla.",
     slug: "al-mubdi",
   },
   {
@@ -542,7 +542,7 @@ export const NAMES: DivineName[] = [
     transliteration: "Al-Mu’īd",
     russianName: "Аль-Муид",
     russianMeaning: "Возвращающий",
-    shortReflection: "",
+    shortReflection: "Qaytish imkonini qadrala.",
     slug: "al-muid",
   },
   {
@@ -551,7 +551,7 @@ export const NAMES: DivineName[] = [
     transliteration: "Al-Muhyī",
     russianName: "Аль-Мухйи",
     russianMeaning: "Дарующий жизнь",
-    shortReflection: "",
+    shortReflection: "Hayotni minnatdorlik bilan yasha.",
     slug: "al-muhyi",
   },
   {
@@ -560,7 +560,7 @@ export const NAMES: DivineName[] = [
     transliteration: "Al-Mumīt",
     russianName: "Аль-Мумит",
     russianMeaning: "Дарующий смерть",
-    shortReflection: "",
+    shortReflection: "Vaqtning qadrini bil.",
     slug: "al-mumit",
   },
   {
@@ -569,7 +569,7 @@ export const NAMES: DivineName[] = [
     transliteration: "Al-Hayy",
     russianName: "Аль-Хайй",
     russianMeaning: "Вечно Живой",
-    shortReflection: "",
+    shortReflection: "Jonli umidni saqla.",
     slug: "al-hayy",
   },
   {
@@ -578,7 +578,7 @@ export const NAMES: DivineName[] = [
     transliteration: "Al-Qayyūm",
     russianName: "Аль-Кайюм",
     russianMeaning: "Поддерживающий жизнь",
-    shortReflection: "",
+    shortReflection: "Barqarorlikni ibodatda izla.",
     slug: "al-qayyum",
   },
   {
@@ -587,7 +587,7 @@ export const NAMES: DivineName[] = [
     transliteration: "Al-Wājid",
     russianName: "Аль-Ваджид",
     russianMeaning: "Исполняющий желаемое",
-    shortReflection: "",
+    shortReflection: "Yetishmovchilikda ham shukr qil.",
     slug: "al-wajid",
   },
   {
@@ -596,7 +596,7 @@ export const NAMES: DivineName[] = [
     transliteration: "Al-Mājid",
     russianName: "Аль-Маджид",
     russianMeaning: "Наиславнейший",
-    shortReflection: "",
+    shortReflection: "Sharafni poklikda saqla.",
     slug: "al-majid-2",
   },
   {
@@ -605,7 +605,7 @@ export const NAMES: DivineName[] = [
     transliteration: "Al-Wāhid",
     russianName: "Аль-Вахид",
     russianMeaning: "Единственный",
-    shortReflection: "",
+    shortReflection: "Yagona yo‘lga sodiq qol.",
     slug: "al-wahid",
   },
   {
@@ -614,7 +614,7 @@ export const NAMES: DivineName[] = [
     transliteration: "Al-Ahad",
     russianName: "Аль-Ахад",
     russianMeaning: "Единый",
-    shortReflection: "",
+    shortReflection: "Birlikni qalbda his et.",
     slug: "al-ahad",
   },
   {
@@ -623,7 +623,7 @@ export const NAMES: DivineName[] = [
     transliteration: "As-Samad",
     russianName: "Ас-Самад",
     russianMeaning: "Самодостаточный",
-    shortReflection: "",
+    shortReflection: "O‘zingga yetarli bo‘lishni o‘rgan.",
     slug: "as-samad",
   },
   {
@@ -632,7 +632,7 @@ export const NAMES: DivineName[] = [
     transliteration: "Al-Qādir",
     russianName: "Аль-Кадир",
     russianMeaning: "Могучий",
-    shortReflection: "",
+    shortReflection: "Imkonni yaxshilikka aylantir.",
     slug: "al-qadir",
   },
   {
@@ -641,7 +641,7 @@ export const NAMES: DivineName[] = [
     transliteration: "Al-Muqtadir",
     russianName: "Аль-Муктадир",
     russianMeaning: "Всемогущий",
-    shortReflection: "",
+    shortReflection: "Quvvatni adolat bilan ishlat.",
     slug: "al-muqtadir",
   },
   {
@@ -650,7 +650,7 @@ export const NAMES: DivineName[] = [
     transliteration: "Al-Muqaddim",
     russianName: "Аль-Мукаддим",
     russianMeaning: "Продвигающий",
-    shortReflection: "",
+    shortReflection: "Yaxshilikni oldinga sur.",
     slug: "al-muqaddim",
   },
   {
@@ -659,7 +659,7 @@ export const NAMES: DivineName[] = [
     transliteration: "Al-Mu’akhkhir",
     russianName: "Аль-Муаххир",
     russianMeaning: "Отодвигающий",
-    shortReflection: "",
+    shortReflection: "Kechikishda ham hikmat bor.",
     slug: "al-muakhkhir",
   },
   {
@@ -668,7 +668,7 @@ export const NAMES: DivineName[] = [
     transliteration: "Al-Awwal",
     russianName: "Аль-Авваль",
     russianMeaning: "Не имеющий начала",
-    shortReflection: "",
+    shortReflection: "Boshlanishni ehtirom bilan esla.",
     slug: "al-awwal",
   },
   {
@@ -677,7 +677,7 @@ export const NAMES: DivineName[] = [
     transliteration: "Al-Ākhir",
     russianName: "Аль-Ахир",
     russianMeaning: "Не имеющий конца",
-    shortReflection: "",
+    shortReflection: "Yakunni go‘zal tugat.",
     slug: "al-akhir",
   },
   {
@@ -686,7 +686,7 @@ export const NAMES: DivineName[] = [
     transliteration: "Az-Zāhir",
     russianName: "Аз-Захир",
     russianMeaning: "Явный",
-    shortReflection: "",
+    shortReflection: "Ochiqlikni rostlik bilan birlashtir.",
     slug: "az-zahir",
   },
   {
@@ -695,7 +695,7 @@ export const NAMES: DivineName[] = [
     transliteration: "Al-Bātin",
     russianName: "Аль-Батын",
     russianMeaning: "Скрытый",
-    shortReflection: "",
+    shortReflection: "Ichki tinchlikni asra.",
     slug: "al-batin",
   },
   {
@@ -704,7 +704,7 @@ export const NAMES: DivineName[] = [
     transliteration: "Al-Wālī",
     russianName: "Аль-Вали",
     russianMeaning: "Правитель",
-    shortReflection: "",
+    shortReflection: "Mas’uliyatni ado et.",
     slug: "al-wali",
   },
   {
@@ -713,7 +713,7 @@ export const NAMES: DivineName[] = [
     transliteration: "Al-Muta’ālī",
     russianName: "Аль-Мутаали",
     russianMeaning: "Превыше недостатков",
-    shortReflection: "",
+    shortReflection: "Yuqori maqsadni past tutma.",
     slug: "al-mutaali",
   },
   {
@@ -722,7 +722,7 @@ export const NAMES: DivineName[] = [
     transliteration: "Al-Barr",
     russianName: "Аль-Барр",
     russianMeaning: "Добродетельный",
-    shortReflection: "",
+    shortReflection: "Ezgulikni kundalikda ko‘rsat.",
     slug: "al-barr",
   },
   {
@@ -731,7 +731,7 @@ export const NAMES: DivineName[] = [
     transliteration: "At-Tawwāb",
     russianName: "Ат-Тавваб",
     russianMeaning: "Принимающий покаяния",
-    shortReflection: "",
+    shortReflection: "Tavbani kechiktirma.",
     slug: "at-tawwab",
   },
   {
@@ -740,7 +740,7 @@ export const NAMES: DivineName[] = [
     transliteration: "Al-Muntaqim",
     russianName: "Аль-Мунтаким",
     russianMeaning: "Карающий",
-    shortReflection: "",
+    shortReflection: "Adolatni g‘azabdan ajrat.",
     slug: "al-muntaqim",
   },
   {
@@ -749,7 +749,7 @@ export const NAMES: DivineName[] = [
     transliteration: "Al-Afuww",
     russianName: "Аль-Афувв",
     russianMeaning: "Прощающий грехи",
-    shortReflection: "",
+    shortReflection: "Kechirishni tanla.",
     slug: "al-afuww",
   },
   {
@@ -758,7 +758,7 @@ export const NAMES: DivineName[] = [
     transliteration: "Ar-Ra’ūf",
     russianName: "Ар-Рауф",
     russianMeaning: "Снисходительный",
-    shortReflection: "",
+    shortReflection: "Mehrni yumshoqlikda top.",
     slug: "ar-rauf",
   },
   {
@@ -767,7 +767,7 @@ export const NAMES: DivineName[] = [
     transliteration: "Mālik-ul-Mulk",
     russianName: "Маликуль-Мульк",
     russianMeaning: "Владыка царства",
-    shortReflection: "",
+    shortReflection: "Hokimiyatni xizmat deb bil.",
     slug: "malik-ul-mulk",
   },
   {
@@ -776,7 +776,7 @@ export const NAMES: DivineName[] = [
     transliteration: "Dhūl-Jalāli wal-Ikrām",
     russianName: "Зуль-Джаляли валь-Икрам",
     russianMeaning: "Обладатель величия и щедрости",
-    shortReflection: "",
+    shortReflection: "Ulug‘vorlikni kamtarlik bilan uyg‘unlashtir.",
     slug: "dhul-jalali-wal-ikram",
   },
   {
@@ -785,7 +785,7 @@ export const NAMES: DivineName[] = [
     transliteration: "Al-Muqsit",
     russianName: "Аль-Муксит",
     russianMeaning: "Справедливый",
-    shortReflection: "",
+    shortReflection: "Adolatni o‘lchovda saqla.",
     slug: "al-muqsit",
   },
   {
@@ -794,7 +794,7 @@ export const NAMES: DivineName[] = [
     transliteration: "Al-Jāmi’",
     russianName: "Аль-Джами",
     russianMeaning: "Собирающий",
-    shortReflection: "",
+    shortReflection: "Yaxshilarni birlashtirishga intil.",
     slug: "al-jami",
   },
   {
@@ -803,7 +803,7 @@ export const NAMES: DivineName[] = [
     transliteration: "Al-Ghaniyy",
     russianName: "Аль-Ганий",
     russianMeaning: "Не нуждающийся",
-    shortReflection: "",
+    shortReflection: "Boylikni qalbda emas, amalda qidir.",
     slug: "al-ghaniyy",
   },
   {
@@ -812,7 +812,7 @@ export const NAMES: DivineName[] = [
     transliteration: "Al-Mughnī",
     russianName: "Аль-Мугни",
     russianMeaning: "Обогащающий",
-    shortReflection: "",
+    shortReflection: "Boshqalarni boyitishni unutma.",
     slug: "al-mughni",
   },
   {
@@ -821,7 +821,7 @@ export const NAMES: DivineName[] = [
     transliteration: "Al-Māni’",
     russianName: "Аль-Мани",
     russianMeaning: "Ограждающий",
-    shortReflection: "",
+    shortReflection: "Zararli yo‘ldan saqlan.",
     slug: "al-mani",
   },
   {
@@ -830,7 +830,7 @@ export const NAMES: DivineName[] = [
     transliteration: "Ad-Dārr",
     russianName: "Ад-Дарр",
     russianMeaning: "Насылающий бедствие",
-    shortReflection: "",
+    shortReflection: "Sinovda sabrni tanla.",
     slug: "ad-darr",
   },
   {
@@ -839,7 +839,7 @@ export const NAMES: DivineName[] = [
     transliteration: "An-Nāfi’",
     russianName: "Ан-Нафи",
     russianMeaning: "Приносящий пользу",
-    shortReflection: "",
+    shortReflection: "Foydali bo‘lishni o‘rgan.",
     slug: "an-nafi",
   },
   {
@@ -848,7 +848,7 @@ export const NAMES: DivineName[] = [
     transliteration: "An-Nūr",
     russianName: "Ан-Нур",
     russianMeaning: "Свет",
-    shortReflection: "",
+    shortReflection: "Qalbingni ezgulik bilan yorit.",
     slug: "an-nur",
   },
   {
@@ -857,7 +857,7 @@ export const NAMES: DivineName[] = [
     transliteration: "Al-Hādī",
     russianName: "Аль-Хади",
     russianMeaning: "Направляющий",
-    shortReflection: "",
+    shortReflection: "To‘g‘ri yo‘lni tanla.",
     slug: "al-hadi",
   },
   {
@@ -866,7 +866,7 @@ export const NAMES: DivineName[] = [
     transliteration: "Al-Badī’",
     russianName: "Аль-Бади",
     russianMeaning: "Изначальный Творец",
-    shortReflection: "",
+    shortReflection: "Ijodni pok niyat bilan boshla.",
     slug: "al-badi",
   },
   {
@@ -875,7 +875,7 @@ export const NAMES: DivineName[] = [
     transliteration: "Al-Bāqī",
     russianName: "Аль-Баки",
     russianMeaning: "Вечный",
-    shortReflection: "",
+    shortReflection: "Doimiylikni yaxshi odatda izla.",
     slug: "al-baqi",
   },
   {
@@ -884,7 +884,7 @@ export const NAMES: DivineName[] = [
     transliteration: "Al-Wārith",
     russianName: "Аль-Варис",
     russianMeaning: "Наследник",
-    shortReflection: "",
+    shortReflection: "Merosni yaxshi amalda qoldir.",
     slug: "al-warith",
   },
   {
@@ -893,7 +893,7 @@ export const NAMES: DivineName[] = [
     transliteration: "Ar-Rashīd",
     russianName: "Ар-Рашид",
     russianMeaning: "Наставляющий",
-    shortReflection: "",
+    shortReflection: "Maslahatni donolik bilan tingla.",
     slug: "ar-rashid",
   },
   {
@@ -902,7 +902,7 @@ export const NAMES: DivineName[] = [
     transliteration: "As-Sabūr",
     russianName: "Ас-Сабур",
     russianMeaning: "Терпеливейший",
-    shortReflection: "",
+    shortReflection: "Sabr — eng go‘zal bezak.",
     slug: "as-sabur",
   }
 ];

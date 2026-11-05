@@ -1,6 +1,9 @@
 import { DailyDashboard } from "@/components/dashboard/DailyDashboard";
 import { getDailyPayload } from "@/lib/daily-name";
-import { getShortcutInstallUrl, getWallpaperApiUrl } from "@/lib/shortcut";
+import {
+  getPersonalWallpaperApiUrl,
+  getShortcutInstallUrl,
+} from "@/lib/shortcut";
 
 export const dynamic = "force-dynamic";
 
@@ -9,7 +12,7 @@ export default function HomePage() {
   return (
     <DailyDashboard
       daily={daily}
-      wallpaperUrl={getWallpaperApiUrl()}
+      wallpaperUrl={getPersonalWallpaperApiUrl()}
       installUrl={getShortcutInstallUrl()}
     />
   );

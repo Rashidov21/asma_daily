@@ -1,0 +1,4 @@
+start day0 id 80 progress {'current': 80, 'total': 99, 'percent': 81}
+start day2 id 82 progress {'current': 82, 'total': 99, 'percent': 83}
+global same date id 80 progress {'current': 80, 'total': 99, 'percent': 81}
+FAIL personal start independent of global

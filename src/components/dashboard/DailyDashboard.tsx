@@ -6,7 +6,7 @@ import { Download } from "lucide-react";
 import { motion, MotionConfig, type Variants } from "framer-motion";
 import type { DailyPayload } from "@/lib/daily-name";
 import { NAMES } from "@/data/names";
-import { getSkyPeriod, isDaylike, type SkyPeriod } from "@/lib/sky-period";
+import { getAppearancePeriod, isDaylike, type SkyPeriod } from "@/lib/sky-period";
 import { NamesRing } from "@/components/dashboard/NamesRing";
 import { SegmentedProgress } from "@/components/dashboard/SegmentedProgress";
 import { InstallShortcutButton } from "@/components/InstallShortcutButton";
@@ -46,13 +46,22 @@ export function DailyDashboard({ daily, wallpaperUrl, installUrl }: Props) {
   const [period, setPeriod] = useState<SkyPeriod>("night");
 
   useEffect(() => {
-    const tick = () => setPeriod(getSkyPeriod());
-    tick();
-    const id = window.setInterval(tick, 60_000);
-    return () => window.clearInterval(id);
+    const media = window.matchMedia("(prefers-color-scheme: light)");
+    const apply = () => {
+      setPeriod(getAppearancePeriod(media.matches ? "light" : "dark"));
+    };
+    apply();
+    media.addEventListener("change", apply);
+    const id = window.setInterval(apply, 60_000);
+    return () => {
+      media.removeEventListener("change", apply);
+      window.clearInterval(id);
+    };
   }, []);
 
   const dayTheme = isDaylike(period);
+  const wallpaperTheme = dayTheme ? "light" : "dark";
+  const themedWallpaperUrl = `/api/wallpaper?date=${date}&theme=${wallpaperTheme}`;
 
   return (
     <MotionConfig reducedMotion="user">
@@ -148,17 +157,21 @@ export function DailyDashboard({ daily, wallpaperUrl, installUrl }: Props) {
 
           <motion.div variants={item} className="mt-8 flex flex-col gap-3">
             <InstallShortcutButton
-              wallpaperUrl={wallpaperUrl}
+              wallpaperUrl={
+                wallpaperUrl
+                  ? `${wallpaperUrl}${wallpaperUrl.includes("?") ? "&" : "?"}theme=${wallpaperTheme}`
+                  : themedWallpaperUrl
+              }
               installUrl={installUrl}
             />
             <a
-              href={`/api/wallpaper?date=${date}`}
-              download={`asma-daily-${date}.png`}
+              href={themedWallpaperUrl}
+              download={`asma-daily-${date}-${wallpaperTheme}.png`}
               className="btn-gold-glow font-ui inline-flex h-12 w-full items-center justify-center gap-2 rounded-full border border-[var(--gold)]/40 text-sm font-medium tracking-wide text-[var(--gold)] hover:border-[var(--gold)]/70 hover:bg-[var(--gold)]/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--gold)]"
               aria-label="Скачать обои"
             >
               <Download className="h-4 w-4" aria-hidden />
-              Скачать обои
+              Скачать обои ({dayTheme ? "oq" : "yulduzli"})
             </a>
             <Link
               href="/names"
