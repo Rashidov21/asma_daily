@@ -9,7 +9,8 @@
     "lint": "eslint",
     "test": "vitest run",
     "test:watch": "vitest",
-    "shortcut:build": "python3 scripts/build-shortcut.py"
+    "shortcut:build": "python3 scripts/build-shortcut.py",
+    "verify:wallpaper": "node scripts/verify-wallpaper-api.mjs"
   },
   "dependencies": {
     "class-variance-authority": "^0.7.1",

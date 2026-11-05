@@ -52,6 +52,14 @@ curl -s http://localhost:3000/api/wallpaper -o /tmp/asma.png
 file /tmp/asma.png
 ```
 
+Verify the **deployed** wallpaper host (must be `image/png`, not HTML):
+
+```bash
+node scripts/verify-wallpaper-api.mjs
+# Wrong host (returns SPA HTML → white Quick Look):
+# node scripts/verify-wallpaper-api.mjs 'https://asma-daily.netlify.app/api/wallpaper'
+```
+
 ## Tests
 
 ```bash

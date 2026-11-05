@@ -8,14 +8,49 @@ import type { DailyProgress } from "@/lib/daily-name";
 export const WALLPAPER_WIDTH = 1179;
 export const WALLPAPER_HEIGHT = 2556;
 
-const COLORS = {
-  bg: "#080619",
-  bg2: "#120D30",
-  gold: "#F5CC65",
-  goldSoft: "#D7B65D",
-  text: "#F5F2FF",
-  text2: "#AAA5BE",
-  muted: "#30234E",
+/** iPhone appearance: light = oq fon, dark = yulduzli kecha. */
+export type WallpaperTheme = "light" | "dark";
+
+export function parseWallpaperTheme(value: string | null | undefined): WallpaperTheme {
+  if (value === "light" || value === "day" || value === "white") return "light";
+  return "dark";
+}
+
+type ThemeColors = {
+  bg: string;
+  bg2: string;
+  gold: string;
+  goldSoft: string;
+  text: string;
+  text2: string;
+  muted: string;
+  star: string;
+  starBright: string;
+};
+
+const THEME_COLORS: Record<WallpaperTheme, ThemeColors> = {
+  dark: {
+    bg: "#080619",
+    bg2: "#120D30",
+    gold: "#F5CC65",
+    goldSoft: "#D7B65D",
+    text: "#F5F2FF",
+    text2: "#AAA5BE",
+    muted: "#30234E",
+    star: "#F5CC65",
+    starBright: "#FFF6E0",
+  },
+  light: {
+    bg: "#F7F4EF",
+    bg2: "#FFFFFF",
+    gold: "#B8860B",
+    goldSoft: "#C9A227",
+    text: "#1E1838",
+    text2: "#5A5478",
+    muted: "#D4CBE0",
+    star: "#C9A227",
+    starBright: "#FFFFFF",
+  },
 };
 
 /**
@@ -147,7 +182,7 @@ function textPath(opts: TextOptions): string {
 /* Decorative pieces                                                   */
 /* ------------------------------------------------------------------ */
 
-function buildStars(count: number): string {
+function buildStars(count: number, colors: ThemeColors): string {
   const stars: string[] = [];
   const minY = 560; // keep the clock area clean
   for (let i = 0; i < count; i++) {
@@ -158,17 +193,36 @@ function buildStars(count: number): string {
     const r = bright ? 2.2 + (i % 3) * 0.5 : 1.1 + (i % 4) * 0.4;
     const opacity = bright ? 0.55 + (i % 3) * 0.12 : 0.28 + (i % 5) * 0.08;
     const glow = bright
-      ? `<circle cx="${(x * WALLPAPER_WIDTH).toFixed(1)}" cy="${py.toFixed(1)}" r="${(r * 3).toFixed(1)}" fill="${COLORS.gold}" opacity="0.12"/>`
+      ? `<circle cx="${(x * WALLPAPER_WIDTH).toFixed(1)}" cy="${py.toFixed(1)}" r="${(r * 3).toFixed(1)}" fill="${colors.gold}" opacity="0.12"/>`
       : "";
     stars.push(
-      `${glow}<circle cx="${(x * WALLPAPER_WIDTH).toFixed(1)}" cy="${py.toFixed(1)}" r="${r}" fill="${bright ? "#FFF6E0" : COLORS.gold}" opacity="${opacity.toFixed(2)}"/>`,
+      `${glow}<circle cx="${(x * WALLPAPER_WIDTH).toFixed(1)}" cy="${py.toFixed(1)}" r="${r}" fill="${bright ? colors.starBright : colors.star}" opacity="${opacity.toFixed(2)}"/>`,
     );
   }
   return stars.join("\n");
 }
 
+/** Soft daylight haze / clouds for light (oq) theme — no stars. */
+function buildDayAtmosphere(colors: ThemeColors): string {
+  return `
+    <ellipse cx="280" cy="780" rx="320" ry="90" fill="#FFFFFF" opacity="0.55"/>
+    <ellipse cx="900" cy="920" rx="380" ry="110" fill="#FFFFFF" opacity="0.45"/>
+    <ellipse cx="520" cy="1180" rx="420" ry="120" fill="#FFFFFF" opacity="0.4"/>
+    <ellipse cx="200" cy="1500" rx="300" ry="80" fill="#FFFFFF" opacity="0.35"/>
+    <ellipse cx="980" cy="1680" rx="340" ry="95" fill="#FFFFFF" opacity="0.38"/>
+    <circle cx="900" cy="700" r="90" fill="${colors.gold}" opacity="0.12"/>
+    <circle cx="900" cy="700" r="48" fill="${colors.goldSoft}" opacity="0.18"/>
+  `;
+}
+
 /** 99 dots around the ring: passed = gold, upcoming = dim, current = glowing. */
-function buildDots(currentIndex: number, cx: number, cy: number, radius: number): string {
+function buildDots(
+  currentIndex: number,
+  cx: number,
+  cy: number,
+  radius: number,
+  colors: ThemeColors,
+): string {
   const n = NAMES.length;
   const parts: string[] = [];
   for (let i = 0; i < n; i++) {
@@ -179,7 +233,7 @@ function buildDots(currentIndex: number, cx: number, cy: number, radius: number)
     const passed = i < currentIndex;
     const quarter = i % 9 === 0;
     const r = quarter ? 4.2 : 3;
-    const fill = passed ? COLORS.gold : COLORS.text2;
+    const fill = passed ? colors.gold : colors.text2;
     const opacity = passed ? (quarter ? 0.9 : 0.65) : quarter ? 0.4 : 0.22;
     parts.push(
       `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${r}" fill="${fill}" opacity="${opacity}"/>`,
@@ -189,14 +243,14 @@ function buildDots(currentIndex: number, cx: number, cy: number, radius: number)
 }
 
 /** Rub el Hizb: two overlapping squares (one rotated 45°) + inner circle. */
-function rubElHizb(cx: number, cy: number, s: number): string {
+function rubElHizb(cx: number, cy: number, s: number, colors: ThemeColors): string {
   const sq = (rot: number, stroke: string, w: number, op: number) =>
     `<rect x="${-s / Math.SQRT2}" y="${-s / Math.SQRT2}" width="${(s * 2) / Math.SQRT2}" height="${(s * 2) / Math.SQRT2}" transform="rotate(${rot})" fill="none" stroke="${stroke}" stroke-width="${w}" stroke-linejoin="round" opacity="${op}"/>`;
   return `
     <g transform="translate(${cx} ${cy})" filter="url(#softGlow)">
-      ${sq(0, COLORS.gold, 2.6, 0.95)}
-      ${sq(45, COLORS.gold, 2.6, 0.95)}
-      <circle r="${s * 0.62}" fill="${COLORS.bg}" fill-opacity="0.6" stroke="${COLORS.goldSoft}" stroke-width="1.4" opacity="0.7"/>
+      ${sq(0, colors.gold, 2.6, 0.95)}
+      ${sq(45, colors.gold, 2.6, 0.95)}
+      <circle r="${s * 0.62}" fill="${colors.bg}" fill-opacity="0.6" stroke="${colors.goldSoft}" stroke-width="1.4" opacity="0.7"/>
     </g>`;
 }
 

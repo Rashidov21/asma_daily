@@ -31,13 +31,17 @@ export async function GET(request: NextRequest) {
       ? "public, max-age=86400, immutable"
       : "public, max-age=0, s-maxage=120, must-revalidate";
 
+    // Explicit length + nosniff help Apple Shortcuts / Quick Look treat the
+    // body as a real PNG (not a failed download or HTML fallback).
     return new NextResponse(new Uint8Array(png), {
       status: 200,
       headers: {
         "Content-Type": "image/png",
+        "Content-Length": String(png.length),
+        "Content-Disposition": `inline; filename="asma-daily-${daily.date}.png"`,
+        "X-Content-Type-Options": "nosniff",
         "Cache-Control": cacheControl,
         "Netlify-Vary": "query=date",
-        "Content-Disposition": `inline; filename="asma-daily-${daily.date}.png"`,
       },
     });
   } catch (error) {

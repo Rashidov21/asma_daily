@@ -26,6 +26,7 @@ export const SHORTCUT_ACTIONS = [
 ] as const;
 
 export const WALLPAPER_FIX_STEPS = [
+  "URL aynan https://asma-daily-wallpaper.netlify.app/api/wallpaper bo‘lsin (asma-daily.netlify.app emas — u boshqa sayt, HTML qaytaradi → Quick Look oq ekran).",
   "Lock Screen-ni bosib turing → + → Photos → istalgan rasm → Add → Set as Wallpaper Pair (Photo Shuffle/Emoji/Color emas).",
   "Shortcuts → shortcutni Edit → Set Wallpaper Photo qo‘shing (faqat Get Contents of URL bo‘lsa — fon o‘zgarmaydi).",
   "Set Wallpaper Photo ichida ko‘k Wallpaper so‘zini bosing → yangi Photos lokskrinni tanlang.",
