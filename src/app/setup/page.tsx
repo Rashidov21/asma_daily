@@ -77,14 +77,14 @@ export default async function SetupPage({
       <section className="mt-10">
         <h2 className="font-display text-xl text-[var(--text)]">API URL</h2>
         <p className="mt-2 text-sm text-[var(--text-2)]">
-          «Get Contents of URL» ichiga shu linkni qo‘ying:
+          Вставьте в «Получить содержимое URL»:
         </p>
         <CopyApiUrl url={overrideUrl} />
       </section>
 
       <section className="mt-10 space-y-4 text-sm leading-relaxed text-[var(--text-2)]">
         <h2 className="font-display text-xl text-[var(--text)]">
-          Shortcut qanday yoziladi (qo‘lda)
+          Как собрать Shortcut вручную
         </h2>
         <ol className="list-decimal space-y-3 pl-5">
           {SHORTCUT_BUILD_STEPS.map((step) => (
@@ -95,15 +95,14 @@ export default async function SetupPage({
           ))}
         </ol>
         <p className="rounded-2xl border border-[var(--gold)]/30 bg-[var(--gold)]/10 p-3 text-[var(--text)]">
-          Tayyor bo‘lgach: Share → Share Shortcut →{" "}
-          <strong>Copy iCloud Link</strong> — shu linkni menga tashlang,
-          `.env` ga qo‘yaman.
+          Готово → Поделиться → Поделиться быстрой командой →{" "}
+          <strong>Скопировать ссылку iCloud</strong>.
         </p>
       </section>
 
       <section className="mt-10 space-y-4 text-sm leading-relaxed text-[var(--text-2)]">
         <h2 className="font-display text-xl text-[var(--text)]">
-          Shortcut ichidagi 2 ta action
+          Два обязательных действия
         </h2>
         <ol className="list-decimal space-y-3 pl-5">
           {SHORTCUT_ACTIONS.map((step) => (
@@ -125,20 +124,19 @@ export default async function SetupPage({
           ))}
         </ol>
         <p className="rounded-2xl border border-[var(--gold)]/30 bg-[var(--gold)]/10 p-3 text-[var(--text)]">
-          Ваш старый Shortcut «Получить содержимое URL» только скачивает файл и{" "}
-          <strong>не меняет обои</strong>. Нужно добавить действие{" "}
-          <em>Set Wallpaper Photo</em>.
+          Старый Shortcut «Получить содержимое URL» только скачивает файл и{" "}
+          <strong>не меняет обои</strong>. Нужно действие{" "}
+          <em>Установить фото как обои</em>.
         </p>
       </section>
 
       <section className="mt-10 space-y-4 text-sm leading-relaxed text-[var(--text-2)]">
         <h2 className="font-display text-xl text-[var(--text)]">
-          Quyosh chiqishi / botishi (avtomatik fon)
+          Рассвет / закат (автосмена фона)
         </h2>
         <p className="text-[var(--text-2)]">
-          <code className="text-[var(--gold)]">theme=auto</code> — Toshkent
-          quyoshi chiqqanda ivory (oq), botganda yulduzli qora. Ikki
-          automation kerak:
+          <code className="text-[var(--gold)]">theme=auto</code> — днём ivory,
+          ночью звёздный фон (по солнцу Ташкента). Нужны две автоматизации:
         </p>
         <ol className="list-decimal space-y-3 pl-5">
           {WALLPAPER_AUTOMATION_STEPS.map((step) => (

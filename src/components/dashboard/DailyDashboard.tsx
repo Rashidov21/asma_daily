@@ -171,7 +171,7 @@ export function DailyDashboard({ daily, wallpaperUrl, installUrl }: Props) {
               aria-label="Скачать обои"
             >
               <Download className="h-4 w-4" aria-hidden />
-              Скачать обои ({dayTheme ? "oq" : "yulduzli"})
+              Скачать обои ({dayTheme ? "светлые" : "тёмные"})
             </a>
             <Link
               href="/names"

@@ -25,13 +25,13 @@ export default function WallpaperPage() {
       </p>
       <p className="mt-1 text-xs text-[var(--gold-soft)]">{daily.hijriLabel}</p>
       <p className="mt-3 text-sm leading-relaxed text-[var(--text-2)]">
-        iPhone Light Mode → oq fon. Dark Mode → yulduzli kecha.
+        Светлая тема — ivory фон. Тёмная — звёздная ночь.
       </p>
 
       <section className="mt-8 space-y-8">
         <div>
           <p className="mb-3 text-xs font-semibold uppercase tracking-[0.2em] text-[var(--gold-soft)]">
-            Light · oq
+            Light · светлые
           </p>
           <div className="relative overflow-hidden rounded-[2rem] border border-[var(--gold)]/20 bg-white shadow-[0_0_60px_rgba(245,204,101,0.08)]">
             {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -53,7 +53,7 @@ export default function WallpaperPage() {
 
         <div>
           <p className="mb-3 text-xs font-semibold uppercase tracking-[0.2em] text-[var(--gold-soft)]">
-            Dark · yulduzli
+            Dark · тёмные
           </p>
           <div className="relative overflow-hidden rounded-[2rem] border border-[var(--gold)]/20 bg-[var(--bg-2)] shadow-[0_0_60px_rgba(245,204,101,0.08)]">
             {/* eslint-disable-next-line @next/next/no-img-element */}

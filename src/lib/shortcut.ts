@@ -46,62 +46,63 @@ export function getShortcutInstallUrl(): string | undefined {
   return url || undefined;
 }
 
-/** Qo‘lda Shortcut yasash — iPhone Shortcuts app (RU UI). */
+/** Manual Shortcut build steps (Russian UI on iPhone). */
 export const SHORTCUT_BUILD_STEPS = [
   {
-    title: "0. Avval Photos Lock Screen yarating (majburiy)",
+    title: "0. Сначала создайте Lock Screen «Фото»",
     detail:
-      "Lock Screen’ni bosib turing → + → Фото (Photos) → istalgan rasm → Добавить → Установить пару обоев. Emoji/Color/Photo Shuffle emas — faqat Фото. Shu bo‘lmasa «Изображение → Обои» xatosi chiqadi.",
+      "Удерживайте Lock Screen → + → Фото → любое фото → Добавить → Установить пару обоев. Не Emoji/Color/Shuffle. Иначе ошибка «Изображение → Обои».",
   },
   {
-    title: "1. Yangi Shortcut",
-    detail: "Команды → + → nomi: ASMA Daily.",
+    title: "1. Новая команда",
+    detail: "Команды → + → имя: ASMA Daily.",
   },
   {
     title: "2. Получить содержимое URL",
     detail:
-      "Действие → Получить содержимое URL. Метод: GET. URL: shaxsiy link (start=…&theme=auto).",
+      "Действие → Получить содержимое URL. Метод: GET. URL: личная ссылка (start=…&theme=auto).",
   },
   {
     title: "3. Установить фото как обои",
     detail:
-      "Действие → Установить фото как обои. Экран блокировки. Показать просмотр: ВЫКЛ. Обрезка объекта: ВЫКЛ. Ko‘k «Обои» so‘zini bosing → yuqorida yaratgan Photos lokskrinni tanlang. Input = Содержимое URL.",
+      "Действие → Установить фото как обои. Экран блокировки. Просмотр: ВЫКЛ. Обрезка: ВЫКЛ. Нажмите синее «Обои» → выберите Photos-локскрин. Ввод = Содержимое URL.",
   },
   {
-    title: "4. (ixtiyoriy) Показать уведомление",
-    detail: "ASMA Daily — wallpaper yangilandi.",
+    title: "4. (опционально) Уведомление",
+    detail: "ASMA Daily — обои обновлены.",
   },
   {
-    title: "5. Tekshirish + share",
+    title: "5. Проверка и share",
     detail:
-      "▶ Run. Keyin Поделиться → Поделиться быстрой командой → Скопировать ссылку iCloud — menga tashlang.",
+      "▶ Запуск. Затем Поделиться → Поделиться быстрой командой → Скопировать ссылку iCloud.",
   },
 ] as const;
 
 export const SHORTCUT_ACTIONS = [
   {
     title: "Получить содержимое URL",
-    detail:
-      "GET → …/api/wallpaper?start=YYYY-MM-DD&theme=auto",
+    detail: "GET → …/api/wallpaper?start=YYYY-MM-DD&theme=auto",
   },
   {
     title: "Установить фото как обои",
     detail:
-      "Lock Screen + Photos wallpaper slot tanlang. Preview/Crop OFF. Aks holda: «не удалось преобразование из Изображение в Обои».",
+      "Lock Screen + слот Photos. Preview/Crop ВЫКЛ. Иначе: «не удалось преобразование из Изображение в Обои».",
   },
 ] as const;
 
 export const WALLPAPER_AUTOMATION_STEPS = [
-  "Shortcuts → Automation → Create Personal Automation → Time of Day → Sunrise.",
-  "Run Immediately (Ask Before Running o‘chirilsin) → Next → Open App emas, Run Shortcut → ASMA Daily.",
-  "Xuddi shunday ikkinchi automation: Sunset → Run Shortcut → ASMA Daily.",
-  "URL da theme=auto bo‘lsin — quyosh chiqqanda oq, botganda qora fon keladi.",
+  "Команды → Автоматизация → Новая → Время суток → Рассвет.",
+  "Сразу (без подтверждения) → Выполнить команду → ASMA Daily.",
+  "Так же вторая автоматизация: Закат → ASMA Daily.",
+  "В URL должен быть theme=auto — днём светлый фон, ночью тёмный.",
 ] as const;
 
 export const WALLPAPER_FIX_STEPS = [
-  "Xato «Изображение → Обои»: avval Lock Screen’da Фото wallpaper yarating, keyin action ichida ko‘k «Обои»ni bosib o‘sha slotni tanlang.",
-  "Показать просмотр и Обрезка объекта — ВЫКЛ.",
-  "URL oxirida &theme=auto bo‘lsin. start= o‘rnatish sanasi bo‘lsin.",
-  "Sunrise + Sunset automation qo‘ying.",
-  "Host: https://asma-daily-wallpaper.netlify.app/api/wallpaper (asma-daily.netlify.app emas).",
+  "Ошибка «Изображение → Обои»: создайте Lock Screen «Фото», в действии нажмите синее «Обои» и выберите этот слот.",
+  "Светлый PNG в списке есть, экран тёмный: Shortcut обновляет другой локскрин. Удерживайте Lock Screen → выберите Photos-слот, который обновляет Shortcut.",
+  "Фокус (Не беспокоить / Работа) может держать другой фон — отключите и проверьте.",
+  "Просмотр и обрезка — ВЫКЛ.",
+  "В URL: &theme=auto и start=дата установки.",
+  "Автоматизации Рассвет + Закат.",
+  "Хост: https://asma-daily-wallpaper.netlify.app/api/wallpaper",
 ] as const;
