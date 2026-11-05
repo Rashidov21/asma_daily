@@ -7,7 +7,7 @@ export type WallpaperUrlOptions = {
    * - `YYYY-MM-DD` → explicit start
    */
   start?: string | true;
-  theme?: "dark" | "light";
+  theme?: "dark" | "light" | "auto";
 };
 
 /** Public wallpaper PNG URL used by the iPhone Shortcut. */
@@ -23,7 +23,8 @@ export function getWallpaperApiUrl(options?: WallpaperUrlOptions): string {
       ? getTashkentDateString()
       : options?.start?.trim() || undefined;
   if (start) params.set("start", start);
-  if (options?.theme) params.set("theme", options.theme);
+  // Default auto: Tashkent sunrise→sunset = light, else dark
+  params.set("theme", options?.theme ?? "auto");
 
   const query = params.toString();
   return query ? `${path}?${query}` : path;
@@ -34,7 +35,7 @@ export function getWallpaperApiUrl(options?: WallpaperUrlOptions): string {
  * then a new name each following day.
  */
 export function getPersonalWallpaperApiUrl(
-  theme?: "dark" | "light",
+  theme?: "dark" | "light" | "auto",
 ): string {
   return getWallpaperApiUrl({ start: true, theme });
 }
@@ -45,24 +46,62 @@ export function getShortcutInstallUrl(): string | undefined {
   return url || undefined;
 }
 
-export const SHORTCUT_ACTIONS = [
+/** Qo‘lda Shortcut yasash — iPhone Shortcuts app (RU UI). */
+export const SHORTCUT_BUILD_STEPS = [
   {
-    title: "Get Contents of URL",
+    title: "0. Avval Photos Lock Screen yarating (majburiy)",
     detail:
-      "GET → …/api/wallpaper?start=YYYY-MM-DD (o‘rnatgan kuningiz). Shu kundan 1-ism, har kuni keyingisi. Theme: &theme=dark|light. Test: ?start=2026-11-05&date=2026-11-07",
+      "Lock Screen’ni bosib turing → + → Фото (Photos) → istalgan rasm → Добавить → Установить пару обоев. Emoji/Color/Photo Shuffle emas — faqat Фото. Shu bo‘lmasa «Изображение → Обои» xatosi chiqadi.",
   },
   {
-    title: "Set Wallpaper Photo",
+    title: "1. Yangi Shortcut",
+    detail: "Команды → + → nomi: ASMA Daily.",
+  },
+  {
+    title: "2. Получить содержимое URL",
     detail:
-      "Lock Screen. Show Preview: выкл. Crop to Subject: выкл. В поле Wallpaper выберите свой Photos-локскрин.",
+      "Действие → Получить содержимое URL. Метод: GET. URL: shaxsiy link (start=…&theme=auto).",
+  },
+  {
+    title: "3. Установить фото как обои",
+    detail:
+      "Действие → Установить фото как обои. Экран блокировки. Показать просмотр: ВЫКЛ. Обрезка объекта: ВЫКЛ. Ko‘k «Обои» so‘zini bosing → yuqorida yaratgan Photos lokskrinni tanlang. Input = Содержимое URL.",
+  },
+  {
+    title: "4. (ixtiyoriy) Показать уведомление",
+    detail: "ASMA Daily — wallpaper yangilandi.",
+  },
+  {
+    title: "5. Tekshirish + share",
+    detail:
+      "▶ Run. Keyin Поделиться → Поделиться быстрой командой → Скопировать ссылку iCloud — menga tashlang.",
   },
 ] as const;
 
+export const SHORTCUT_ACTIONS = [
+  {
+    title: "Получить содержимое URL",
+    detail:
+      "GET → …/api/wallpaper?start=YYYY-MM-DD&theme=auto",
+  },
+  {
+    title: "Установить фото как обои",
+    detail:
+      "Lock Screen + Photos wallpaper slot tanlang. Preview/Crop OFF. Aks holda: «не удалось преобразование из Изображение в Обои».",
+  },
+] as const;
+
+export const WALLPAPER_AUTOMATION_STEPS = [
+  "Shortcuts → Automation → Create Personal Automation → Time of Day → Sunrise.",
+  "Run Immediately (Ask Before Running o‘chirilsin) → Next → Open App emas, Run Shortcut → ASMA Daily.",
+  "Xuddi shunday ikkinchi automation: Sunset → Run Shortcut → ASMA Daily.",
+  "URL da theme=auto bo‘lsin — quyosh chiqqanda oq, botganda qora fon keladi.",
+] as const;
+
 export const WALLPAPER_FIX_STEPS = [
-  "URL da start= o‘rnatish sanasi bo‘lsin (masalan ?start=2026-11-05) — aks holda global tsikl, 1-ismdan emas.",
-  "Host: https://asma-daily-wallpaper.netlify.app/api/wallpaper (asma-daily.netlify.app emas — HTML → Quick Look oq ekran).",
-  "Lock Screen-ni bosib turing → + → Photos → istalgan rasm → Add → Set as Wallpaper Pair (Photo Shuffle/Emoji/Color emas).",
-  "Shortcuts → shortcutni Edit → Set Wallpaper Photo qo‘shing (faqat Get Contents of URL bo‘lsa — fon o‘zgarmaydi).",
-  "Set Wallpaper Photo ichida ko‘k Wallpaper so‘zini bosing → yangi Photos lokskrinni tanlang.",
-  "Show Preview va Crop to Subject o‘chirilsin → ▶ bilan ishga tushiring.",
+  "Xato «Изображение → Обои»: avval Lock Screen’da Фото wallpaper yarating, keyin action ichida ko‘k «Обои»ni bosib o‘sha slotni tanlang.",
+  "Показать просмотр и Обрезка объекта — ВЫКЛ.",
+  "URL oxirida &theme=auto bo‘lsin. start= o‘rnatish sanasi bo‘lsin.",
+  "Sunrise + Sunset automation qo‘ying.",
+  "Host: https://asma-daily-wallpaper.netlify.app/api/wallpaper (asma-daily.netlify.app emas).",
 ] as const;

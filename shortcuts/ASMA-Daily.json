@@ -19,9 +19,9 @@
     {
       "ActionIndex": 0,
       "Category": "Parameter",
-      "DefaultValue": "https://asma-daily-wallpaper.netlify.app/api/wallpaper?start=2026-11-05",
+      "DefaultValue": "https://asma-daily-wallpaper.netlify.app/api/wallpaper?start=2026-11-05&theme=auto",
       "ParameterKey": "WFURL",
-      "Text": "Personal wallpaper URL (keep ?start=install-day so you begin at name 1)"
+      "Text": "Personal wallpaper URL (keep start=install-day; theme=auto = quyosh chiqishi/botishi)"
     }
   ],
   "WFWorkflowActions": [
@@ -31,7 +31,7 @@
         "UUID": "A1111111-1111-4111-8111-111111111111",
         "CustomOutputName": "ASMA Wallpaper",
         "WFHTTPMethod": "GET",
-        "WFURL": "https://asma-daily-wallpaper.netlify.app/api/wallpaper?start=2026-11-05"
+        "WFURL": "https://asma-daily-wallpaper.netlify.app/api/wallpaper?start=2026-11-05&theme=auto"
       }
     },
     {
@@ -57,7 +57,7 @@
       "WFWorkflowActionParameters": {
         "UUID": "A3333333-3333-4333-8333-333333333333",
         "WFNotificationActionTitle": "ASMA Daily",
-        "WFNotificationActionBody": "Bugungi Lock Screen wallpaper o‘rnatildi"
+        "WFNotificationActionBody": "Lock Screen: quyoshga qarab light/dark wallpaper"
       }
     }
   ]

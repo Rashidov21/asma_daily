@@ -5,6 +5,8 @@ import { CopyApiUrl } from "@/components/CopyApiUrl";
 import { AutoInstallBanner } from "@/components/AutoInstallBanner";
 import {
   SHORTCUT_ACTIONS,
+  SHORTCUT_BUILD_STEPS,
+  WALLPAPER_AUTOMATION_STEPS,
   WALLPAPER_FIX_STEPS,
   getPersonalWallpaperApiUrl,
   getShortcutInstallUrl,
@@ -75,14 +77,33 @@ export default async function SetupPage({
       <section className="mt-10">
         <h2 className="font-display text-xl text-[var(--text)]">API URL</h2>
         <p className="mt-2 text-sm text-[var(--text-2)]">
-          Для «Get Contents of URL»:
+          «Get Contents of URL» ichiga shu linkni qo‘ying:
         </p>
         <CopyApiUrl url={overrideUrl} />
       </section>
 
       <section className="mt-10 space-y-4 text-sm leading-relaxed text-[var(--text-2)]">
         <h2 className="font-display text-xl text-[var(--text)]">
-          Обязательные действия
+          Shortcut qanday yoziladi (qo‘lda)
+        </h2>
+        <ol className="list-decimal space-y-3 pl-5">
+          {SHORTCUT_BUILD_STEPS.map((step) => (
+            <li key={step.title}>
+              <strong className="text-[var(--text)]">{step.title}</strong>
+              <span className="block text-[var(--text-2)]">{step.detail}</span>
+            </li>
+          ))}
+        </ol>
+        <p className="rounded-2xl border border-[var(--gold)]/30 bg-[var(--gold)]/10 p-3 text-[var(--text)]">
+          Tayyor bo‘lgach: Share → Share Shortcut →{" "}
+          <strong>Copy iCloud Link</strong> — shu linkni menga tashlang,
+          `.env` ga qo‘yaman.
+        </p>
+      </section>
+
+      <section className="mt-10 space-y-4 text-sm leading-relaxed text-[var(--text-2)]">
+        <h2 className="font-display text-xl text-[var(--text)]">
+          Shortcut ichidagi 2 ta action
         </h2>
         <ol className="list-decimal space-y-3 pl-5">
           {SHORTCUT_ACTIONS.map((step) => (
@@ -112,17 +133,17 @@ export default async function SetupPage({
 
       <section className="mt-10 space-y-4 text-sm leading-relaxed text-[var(--text-2)]">
         <h2 className="font-display text-xl text-[var(--text)]">
-          Ежедневная автоматизация
+          Quyosh chiqishi / botishi (avtomatik fon)
         </h2>
+        <p className="text-[var(--text-2)]">
+          <code className="text-[var(--gold)]">theme=auto</code> — Toshkent
+          quyoshi chiqqanda ivory (oq), botganda yulduzli qora. Ikki
+          automation kerak:
+        </p>
         <ol className="list-decimal space-y-3 pl-5">
-          <li>
-            <strong className="text-[var(--text)]">Shortcuts</strong> →
-            Automation → Time of Day.
-          </li>
-          <li>
-            Выберите <em>Run Immediately</em> (сразу), без подтверждения.
-          </li>
-          <li>Запускайте тот же Shortcut каждый день.</li>
+          {WALLPAPER_AUTOMATION_STEPS.map((step) => (
+            <li key={step}>{step}</li>
+          ))}
         </ol>
       </section>
     </main>

@@ -1,12 +1,25 @@
+import { isSunUp } from "@/lib/sun";
+
 export const WALLPAPER_WIDTH = 1179;
 export const WALLPAPER_HEIGHT = 2556;
 
-/** iPhone appearance: light = ivory, dark = midnight. */
+/** light = ivory (day), dark = midnight (night). */
 export type WallpaperTheme = "light" | "dark";
 
-export function parseWallpaperTheme(value: string | null | undefined): WallpaperTheme {
-  if (value === "light" || value === "day" || value === "white") return "light";
-  return "dark";
+/**
+ * Resolve wallpaper theme.
+ * - `light` / `dark` — explicit
+ * - `auto` / `sun` / omitted — Tashkent sunrise→sunset = light, else dark
+ */
+export function parseWallpaperTheme(
+  value: string | null | undefined,
+  at: Date = new Date(),
+): WallpaperTheme {
+  const v = value?.trim().toLowerCase();
+  if (v === "light" || v === "day" || v === "white") return "light";
+  if (v === "dark" || v === "night") return "dark";
+  // auto | sun | "" | null
+  return isSunUp(at) ? "light" : "dark";
 }
 
 export type ThemeColors = {
